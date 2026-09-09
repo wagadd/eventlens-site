@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EventLens — Partagez l'instant, en direct.</title>
+<meta name="description" content="EventLens collecte toutes les photos de votre événement en temps réel. Les invités rejoignent par QR code, sans app ni compte. Galerie live, mur photo, modération IA.">
+<style>
+  :root{
+    --bg:#0F1220;
+    --bg-soft:#151A2E;
+    --bg-card:#1A2038;
+    --border:rgba(255,255,255,.08);
+    --border-strong:rgba(255,255,255,.14);
+    --text:#F2F3F8;
+    --muted:#A6ACC4;
+    --violet:#6D5DF6;
+    --rose:#FF5E9C;
+    --orange:#FF9A3D;
+    --grad:linear-gradient(100deg,#6D5DF6 0%,#FF5E9C 52%,#FF9A3D 100%);
+    --radius:20px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img,svg{max-width:100%}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+  section{padding:72px 0}
+  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .kicker{
+    display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--rose);margin-bottom:14px;
+  }
+  h1,h2,h3{line-height:1.15;letter-spacing:-.02em}
+  h2{font-size:clamp(1.7rem,4vw,2.5rem);margin-bottom:14px}
+  .section-head{max-width:640px;margin:0 auto 48px;text-align:center}
+  .section-head p{color:var(--muted);font-size:1.05rem}
+
+  /* ---------- Boutons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:.5em;
+    padding:14px 26px;border-radius:999px;font-weight:700;font-size:1rem;
+    transition:transform .15s ease,box-shadow .15s ease,background .15s ease;
+    cursor:pointer;border:none;
+  }
+  .btn-primary{
+    background:var(--grad);color:#fff;
+    box-shadow:0 8px 28px rgba(255,94,156,.35);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(255,94,156,.45)}
+  .btn-ghost{
+    background:rgba(255,255,255,.06);color:var(--text);
+    border:1px solid var(--border-strong);
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,.11);transform:translateY(-2px)}
+  .btn-sm{padding:10px 20px;font-size:.9rem}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(15,18,32,.82);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.2rem;letter-spacing:-.02em}
+  .logo-mark{
+    width:34px;height:34px;border-radius:10px;background:var(--grad);
+    display:flex;align-items:center;justify-content:center;font-size:1.05rem;
+    box-shadow:0 4px 14px rgba(109,93,246,.45);
+  }
+  .nav-links{display:none;gap:28px;font-size:.95rem;color:var(--muted)}
+  .nav-links a:hover{color:var(--text)}
+  .nav-cta{display:none}
+  /* ---------- Menu burger (mobile) ---------- */
+  .burger{
+    display:flex;flex-direction:column;justify-content:center;gap:5px;
+    width:44px;height:44px;padding:10px;border:1px solid var(--border-strong);
+    border-radius:12px;background:rgba(255,255,255,.06);cursor:pointer;
+  }
+  .burger span{
+    display:block;height:2px;border-radius:2px;background:var(--text);
+    transition:transform .2s ease,opacity .2s ease;
+  }
+  .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .burger.open span:nth-child(2){opacity:0}
+  .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .mobile-menu{
+    display:none;flex-direction:column;gap:4px;
+    padding:10px 20px 18px;border-top:1px solid var(--border);
+    background:rgba(15,18,32,.97);
+  }
+  .mobile-menu.open{display:flex}
+  .mobile-menu a{padding:12px 4px;font-weight:600;color:var(--muted)}
+  .mobile-menu a:hover{color:var(--text)}
+  .mobile-menu .btn{margin-top:8px;color:#fff;text-align:center}
+  @media(min-width:860px){
+    .nav-links{display:flex}
+    .nav-cta{display:inline-flex}
+    .burger,.mobile-menu,.mobile-menu.open{display:none}
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative;padding:84px 0 90px;overflow:hidden}
+  .hero::before{
+    content:"";position:absolute;inset:-40% -20% auto;height:120%;
+    background:
+      radial-gradient(42% 55% at 22% 30%,rgba(109,93,246,.32),transparent 70%),
+      radial-gradient(38% 50% at 62% 18%,rgba(255,94,156,.22),transparent 70%),
+      radial-gradient(30% 45% at 88% 45%,rgba(255,154,61,.18),transparent 70%);
+    pointer-events:none;
+  }
+  .hero .wrap{position:relative;display:grid;gap:56px;align-items:center}
+  @media(min-width:920px){.hero .wrap{grid-template-columns:1.1fr .9fr}}
+  .hero h1{font-size:clamp(2.3rem,6vw,3.7rem);font-weight:800;margin-bottom:20px}
+  .hero-sub{color:var(--muted);font-size:1.15rem;max-width:520px;margin-bottom:32px}
+  .hero-sub strong{color:var(--text)}
+  .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:28px}
+  .hero-trust{display:flex;flex-wrap:wrap;gap:10px 22px;color:var(--muted);font-size:.88rem}
+  .hero-trust span{display:inline-flex;align-items:center;gap:6px}
+
+  /* ---------- Mockup téléphone ---------- */
+  .hero-visual{display:flex;justify-content:center;position:relative}
+  .phone{
+    position:relative;width:290px;max-width:78vw;aspect-ratio:9/19;
+    border-radius:44px;padding:12px;
+    background:linear-gradient(160deg,#2A2F4A,#181C30);
+    border:1px solid var(--border-strong);
+    box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.04) inset;
+    transform:rotate(-2deg);
+  }
+  .phone-screen{
+    position:relative;width:100%;height:100%;border-radius:34px;overflow:hidden;
+    background:#10142A;display:flex;flex-direction:column;
+  }
+  .phone-notch{
+    position:absolute;top:10px;left:50%;transform:translateX(-50%);
+    width:86px;height:22px;border-radius:12px;background:#05060D;z-index:3;
+  }
+  .app-bar{
+    padding:44px 16px 12px;display:flex;align-items:center;justify-content:space-between;
+    font-size:.72rem;font-weight:700;
+  }
+  .app-bar .dot{
+    display:inline-flex;align-items:center;gap:5px;color:#8CE99A;
+    font-weight:700;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;
+  }
+  .app-bar .dot::before{
+    content:"";width:7px;height:7px;border-radius:50%;background:#8CE99A;
+    box-shadow:0 0 8px #8CE99A;animation:pulse 1.6s infinite;
+  }
+  @keyframes pulse{50%{opacity:.35}}
+  .photo-grid{
+    flex:1;display:grid;grid-template-columns:repeat(3,1fr);
+    grid-auto-rows:1fr;gap:6px;padding:6px 12px 12px;
+  }
+  .ph{border-radius:10px;position:relative;overflow:hidden}
+  .ph::after{content:attr(data-e);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.15rem}
+  .ph.big{grid-column:span 2;grid-row:span 2}
+  .ph-1{background:linear-gradient(135deg,#6D5DF6,#9F7BFF)}
+  .ph-2{background:linear-gradient(135deg,#FF5E9C,#FF8FB8)}
+  .ph-3{background:linear-gradient(135deg,#FF9A3D,#FFC46B)}
+  .ph-4{background:linear-gradient(135deg,#4A3ED8,#FF5E9C)}
+  .ph-5{background:linear-gradient(135deg,#FF5E9C,#FF9A3D)}
+  .ph-6{background:linear-gradient(135deg,#2E3A8C,#6D5DF6)}
+  .ph-7{background:linear-gradient(135deg,#FF9A3D,#FF5E9C)}
+  .ph-8{background:linear-gradient(135deg,#6D5DF6,#FF9A3D)}
+  .phone-toast{
+    position:absolute;left:50%;bottom:18px;transform:translateX(-50%);
+    background:rgba(10,12,24,.86);border:1px solid var(--border-strong);
+    border-radius:999px;padding:8px 16px;font-size:.68rem;font-weight:600;
+    white-space:nowrap;backdrop-filter:blur(6px);z-index:2;
+  }
+  .qr-float{
+    position:absolute;right:-8px;bottom:34px;z-index:4;
+    background:#fff;border-radius:16px;padding:10px;
+    box-shadow:0 16px 40px rgba(0,0,0,.5);
+    transform:rotate(5deg);
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+  }
+  .qr-float small{color:#0F1220;font-weight:800;font-size:.6rem;letter-spacing:.04em}
+  @media(min-width:920px){.qr-float{right:14px}}
+
+  /* ---------- Étapes ---------- */
+  .steps{display:grid;gap:22px}
+  @media(min-width:820px){.steps{grid-template-columns:repeat(3,1fr)}}
+  .step{
+    background:var(--bg-card);border:1px solid var(--border);
+    border-radius:var(--radius);padding:30px 26px;position:relative;
+  }
+  .step-num{
+    width:44px;height:44px;border-radius:14px;background:var(--grad);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:1.15rem;margin-bottom:18px;color:#fff;
+    box-shadow:0 6px 18px rgba(255,94,156,.35);
+  }
+  .step h3{font-size:1.15rem;margin-bottom:8px}
+  .step p{color:var(--muted);font-size:.95rem}
+
+  /* ---------- Fonctionnalités ---------- */
+  #fonctionnalites{background:var(--bg-soft);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .features{display:grid;gap:18px}
+  @media(min-width:640px){.features{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:1000px){.features{grid-template-columns:repeat(4,1fr)}}
+  .feature{
+    background:var(--bg-card);border:1px solid var(--border);
+    border-radius:var(--radius);padding:26px 22px;
+    transition:transform .18s ease,border-color .18s ease;
+  }
+  .feature:hover{transform:translateY(-4px);border-color:rgba(255,94,156,.4)}
+  .feature-ico{
+    width:46px;height:46px;border-radius:13px;margin-bottom:16px;
+    display:flex;align-items:center;justify-content:center;font-size:1.35rem;
+    background:linear-gradient(135deg,rgba(109,93,246,.25),rgba(255,94,156,.18));
+    border:1px solid var(--border-strong);
+  }
+  .feature h3{font-size:1.02rem;margin-bottom:8px}
+  .feature p{color:var(--muted);font-size:.88rem}
+
+  /* ---------- Photo wall ---------- */
+  .wall-grid{display:grid;gap:48px;align-items:center}
+  @media(min-width:920px){.wall-grid{grid-template-columns:1fr 1.1fr}}
+  .wall-copy .kicker{color:var(--orange)}
+  .wall-copy p{color:var(--muted);margin-bottom:18px}
+  .wall-copy ul{list-style:none;display:grid;gap:12px;margin:22px 0 30px}
+  .wall-copy li{display:flex;gap:12px;align-items:flex-start;color:var(--muted);font-size:.97rem}
+  .wall-copy li::before{
+    content:"✓";flex:none;width:22px;height:22px;border-radius:7px;
+    background:var(--grad);color:#fff;font-size:.75rem;font-weight:800;
+    display:flex;align-items:center;justify-content:center;margin-top:2px;
+  }
+  .tv{
+    background:#05060D;border:1px solid var(--border-strong);border-radius:22px;
+    padding:14px;box-shadow:0 26px 70px rgba(0,0,0,.5);
+  }
+  .tv-screen{
+    border-radius:14px;overflow:hidden;aspect-ratio:16/10;position:relative;
+    display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:5px;
+    background:#0A0D1C;padding:5px;
+  }
+  .tv-screen .ph::after{font-size:1.5rem}
+  .tv-badge{
+    position:absolute;top:12px;left:12px;z-index:2;
+    background:rgba(10,12,24,.85);border:1px solid var(--border-strong);
+    border-radius:999px;padding:5px 12px;font-size:.68rem;font-weight:700;
+    display:flex;align-items:center;gap:6px;color:#8CE99A;
+  }
+  .tv-badge::before{content:"";width:7px;height:7px;border-radius:50%;background:#8CE99A;animation:pulse 1.6s infinite}
+  .tv-qr{
+    position:absolute;right:10px;bottom:10px;z-index:2;background:#fff;
+    border-radius:10px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:2px;
+  }
+  .tv-qr small{color:#0F1220;font-weight:800;font-size:.52rem}
+  .tv-base{width:120px;height:8px;margin:10px auto 0;border-radius:4px;background:#1B2036}
+
+  /* ---------- Types d'événements ---------- */
+  .event-types{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+  .chip{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--bg-card);border:1px solid var(--border-strong);
+    border-radius:999px;padding:10px 20px;font-weight:600;font-size:.95rem;
+    transition:transform .15s ease,border-color .15s ease;
+  }
+  .chip:hover{transform:translateY(-2px);border-color:rgba(255,94,156,.5)}
+
+  /* ---------- Pricing ---------- */
+  #tarifs{background:var(--bg-soft);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .plans{display:grid;gap:22px;align-items:stretch}
+  @media(min-width:900px){.plans{grid-template-columns:repeat(3,1fr)}}
+  .plan{
+    background:var(--bg-card);border:1px solid var(--border);
+    border-radius:24px;padding:34px 28px;display:flex;flex-direction:column;position:relative;
+  }
+  .plan-featured{
+    border:2px solid transparent;
+    background:
+      linear-gradient(var(--bg-card),var(--bg-card)) padding-box,
+      var(--grad) border-box;
+    box-shadow:0 22px 60px rgba(109,93,246,.25);
+  }
+  @media(min-width:900px){.plan-featured{transform:scale(1.04)}}
+  .plan-badge{
+    position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+    background:var(--grad);color:#fff;font-size:.72rem;font-weight:800;
+    letter-spacing:.08em;text-transform:uppercase;
+    border-radius:999px;padding:6px 16px;white-space:nowrap;
+  }
+  .plan h3{font-size:1.15rem;margin-bottom:6px}
+  .plan-desc{color:var(--muted);font-size:.88rem;margin-bottom:20px}
+  .price{font-size:2.3rem;font-weight:800;letter-spacing:-.03em}
+  .price small{font-size:.95rem;font-weight:600;color:var(--muted)}
+  .plan ul{list-style:none;margin:24px 0 30px;display:grid;gap:11px;flex:1}
+  .plan li{display:flex;gap:10px;align-items:flex-start;color:var(--muted);font-size:.92rem}
+  .plan li::before{content:"✓";color:var(--rose);font-weight:800;flex:none}
+  .plan .btn{width:100%}
+
+  /* ---------- Langues ---------- */
+  .langs{
+    display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px;
+  }
+  .lang{
+    background:var(--bg-card);border:1px solid var(--border-strong);border-radius:12px;
+    padding:8px 16px;font-weight:700;font-size:.88rem;letter-spacing:.04em;
+  }
+
+  /* ---------- FAQ ---------- */
+  .faq{max-width:760px;margin:0 auto;display:grid;gap:14px}
+  details{
+    background:var(--bg-card);border:1px solid var(--border);
+    border-radius:16px;overflow:hidden;
+  }
+  details[open]{border-color:rgba(109,93,246,.45)}
+  summary{
+    cursor:pointer;padding:20px 24px;font-weight:700;font-size:1rem;
+    list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary::after{
+    content:"+";font-size:1.5rem;font-weight:400;color:var(--rose);
+    transition:transform .2s ease;flex:none;line-height:1;
+  }
+  details[open] summary::after{transform:rotate(45deg)}
+  details p{padding:0 24px 22px;color:var(--muted);font-size:.95rem}
+
+  /* ---------- CTA final ---------- */
+  .final-cta{
+    text-align:center;border-radius:28px;padding:64px 24px;position:relative;overflow:hidden;
+    background:
+      radial-gradient(60% 90% at 30% 0%,rgba(109,93,246,.4),transparent 70%),
+      radial-gradient(50% 80% at 75% 100%,rgba(255,154,61,.3),transparent 70%),
+      var(--bg-card);
+    border:1px solid var(--border-strong);
+  }
+  .final-cta h2{font-size:clamp(1.7rem,4vw,2.4rem)}
+  .final-cta p{color:var(--muted);max-width:480px;margin:12px auto 32px}
+
+  /* ---------- Footer ---------- */
+  footer{border-top:1px solid var(--border);padding:48px 0 40px;color:var(--muted);font-size:.9rem}
+  .foot{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center}
+  .foot-links{display:flex;flex-wrap:wrap;gap:20px}
+  .foot-links a:hover{color:var(--text)}
+  .foot a[href^="mailto"]{color:var(--rose);font-weight:600}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="wrap nav">
+    <a href="#" class="logo"><span class="logo-mark">📸</span>EventLens</a>
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="#comment">Comment ça marche</a>
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#photowall">Mur photo</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#tarifs" class="btn btn-primary btn-sm nav-cta">Créer mon événement</a>
+    <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Navigation mobile">
+    <a href="#comment">Comment ça marche</a>
+    <a href="#fonctionnalites">Fonctionnalités</a>
+    <a href="#photowall">Mur photo</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#faq">FAQ</a>
+    <a href="#tarifs" class="btn btn-primary btn-sm">Créer mon événement</a>
+  </nav>
+</header>
+<script>
+  (function () {
+    var burger = document.getElementById('burger');
+    var menu = document.getElementById('mobile-menu');
+    function setOpen(open) {
+      menu.classList.toggle('open', open);
+      burger.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    }
+    burger.addEventListener('click', function () { setOpen(!menu.classList.contains('open')); });
+    menu.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+  })();
+</script>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="kicker">Photos d'événements en temps réel</span>
+      <h1>Partagez l'instant, <span class="grad-text">en direct.</span></h1>
+      <p class="hero-sub">
+        EventLens collecte <strong>toutes les photos de votre événement</strong> en un seul endroit.
+        Vos invités rejoignent par simple <strong>QR code</strong> — sans installer d'app, sans créer de compte —
+        et chaque souvenir arrive en direct dans votre galerie.
+      </p>
+      <div class="hero-ctas">
+        <a href="#tarifs" class="btn btn-primary">Créer mon événement 🎉</a>
+        <a href="./join.html" class="btn btn-ghost">Rejoindre un événement</a>
+      </div>
+      <div class="hero-trust">
+        <span>✅ Sans app ni compte pour les invités</span>
+        <span>🛡️ Modération IA incluse</span>
+        <span>🇪🇺 Conforme RGPD</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="phone" role="img" aria-label="Mockup de l'application EventLens montrant une galerie photo en direct">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="app-bar">
+            <span>Mariage de Léa &amp; Sami</span>
+            <span class="dot">Live</span>
+          </div>
+          <div class="photo-grid">
+            <div class="ph ph-1 big" data-e="💍"></div>
+            <div class="ph ph-2" data-e="🥂"></div>
+            <div class="ph ph-3" data-e="💃"></div>
+            <div class="ph ph-4" data-e="🎶"></div>
+            <div class="ph ph-5" data-e="🌸"></div>
+            <div class="ph ph-6" data-e="🕺"></div>
+            <div class="ph ph-7 big" data-e="🎂"></div>
+            <div class="ph ph-8" data-e="✨"></div>
+            <div class="ph ph-2" data-e="📷"></div>
+            <div class="ph ph-6" data-e="🎁"></div>
+          </div>
+          <div class="phone-toast">📤 Nouvelle photo de Karim · à l'instant</div>
+        </div>
+        <div class="qr-float" aria-hidden="true">
+          <svg width="64" height="64" viewBox="0 0 21 21" shape-rendering="crispEdges">
+            <rect width="21" height="21" fill="#fff"/>
+            <path fill="#0F1220" d="M0 0h7v7H0zM2 2h3v3H2zM14 0h7v7h-7zM16 2h3v3h-3zM0 14h7v7H0zM2 16h3v3H2zM9 0h1v2H9zM11 1h1v3h-1zM9 3h2v1H9zM12 4h2v1h-2zM9 5h1v2H9zM11 6h2v1h-2zM0 9h2v1H0zM3 8h1v2H3zM5 9h3v1H5zM8 8h1v1H8zM10 8h2v2h-2zM13 9h1v2h-1zM15 8h2v1h-2zM18 8h1v2h-1zM20 9h1v2h-1zM1 11h2v1H1zM4 11h1v2H4zM6 12h2v1H6zM9 11h1v3H9zM11 12h2v2h-2zM14 12h1v1h-1zM16 11h2v1h-2zM19 12h2v1h-2zM8 14h1v2H8zM10 15h2v1h-2zM13 14h2v2h-2zM16 14h1v2h-1zM18 14h3v1h-3zM9 17h2v2H9zM12 17h1v3h-1zM14 17h2v1h-2zM17 17h2v2h-2zM20 16h1v3h-1zM8 19h1v2H8zM10 20h4v1h-4zM15 19h2v2h-2zM19 20h1v1h-1z"/>
+          </svg>
+          <small>SCANNEZ-MOI</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMMENT ÇA MARCHE ============ -->
+<section id="comment">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Simple comme un sourire</span>
+      <h2>Comment ça marche</h2>
+      <p>De la création à la projection, trois étapes suffisent pour ne plus jamais perdre une photo de fête.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Créez votre événement</h3>
+        <p>Donnez-lui un nom, une date, un thème — puis affichez le QR code EventLens sur les tables, l'invitation ou l'écran d'accueil.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Les invités scannent et partagent</h3>
+        <p>Un scan, et c'est parti : chacun envoie ses photos et vidéos courtes depuis son navigateur. Aucune app à installer, aucun compte à créer.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Tout arrive en direct</h3>
+        <p>Chaque contenu est modéré par IA puis rejoint la galerie live et le mur photo projeté. Vous profitez de la fête, EventLens s'occupe des souvenirs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FONCTIONNALITÉS ============ -->
+<section id="fonctionnalites">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Tout est inclus</span>
+      <h2>Des fonctionnalités pensées pour la fête</h2>
+      <p>Puissant pour les organisateurs, magique pour les invités.</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-ico">📲</div>
+        <h3>QR code, sans app ni compte</h3>
+        <p>Vos invités scannent et participent immédiatement depuis leur navigateur. Zéro friction, même pour mamie.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-ico">🛡️</div>
+        <h3>Modération IA automatique</h3>
+        <p>Filtre NSFW actif dès l'offre gratuite : seuls les contenus appropriés rejoignent la galerie et le mur photo.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-ico">🤳</div>
+        <h3>Selfie-Match</h3>
+        <p>Un selfie suffit pour retrouver toutes les photos où vous apparaissez. Fini de mendier les photos après la fête.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-ico">📺</div>
+        <h3>Photo wall &amp; diaporama live</h3>
+        <p>Projetez le flux en direct sur grand écran, avec le QR de participation intégré pour entraîner toute la salle.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-ico">🗂️</div>
+        <h3>Albums intelligents</h3>
+        <p>L'IA classe automatiquement vos souvenirs par moments : cérémonie, cocktail, dîner, piste de danse…</p>
+      </div>
+      <div class="feature">
+        <div class="feature-ico">💌</div>
+        <h3>Livre d'or photo &amp; notes vocales</h3>
+        <p>Les invités laissent un message photo ou une note vocale : un livre d'or vivant que vous réécouterez avec émotion.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-ico">✨</div>
+        <h3>Amélioration d'image par IA</h3>
+        <p>Photo sombre ou floue ? Un geste suffit pour la sublimer, directement dans la galerie.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-ico">🇪🇺</div>
+        <h3>Conforme RGPD</h3>
+        <p>Purge automatique à l'échéance, données hébergées avec soin : vos souvenirs ne traînent jamais où il ne faut pas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PHOTO WALL ============ -->
+<section id="photowall">
+  <div class="wrap wall-grid">
+    <div class="wall-copy">
+      <span class="kicker">L'effet waouh</span>
+      <h2>Le mur photo qui met l'ambiance</h2>
+      <p>
+        Projetez la galerie en direct sur écran géant ou vidéoprojecteur : chaque nouvelle photo
+        apparaît en temps réel devant tous les invités, avec le QR code de participation incrusté.
+      </p>
+      <ul>
+        <li>Diaporama live qui se met à jour à chaque envoi</li>
+        <li>QR de participation intégré à l'écran — l'effet boule de neige garanti</li>
+        <li>Uniquement des contenus validés par la modération IA</li>
+        <li>Sans filigrane avec le Pass Événement Premium</li>
+      </ul>
+      <a href="#tarifs" class="btn btn-primary">Créer mon événement</a>
+    </div>
+    <div>
+      <div class="tv" role="img" aria-label="Mur photo EventLens projeté sur un grand écran">
+        <div class="tv-screen">
+          <div class="tv-badge">Diaporama live</div>
+          <div class="ph ph-4 big" data-e="💃"></div>
+          <div class="ph ph-3" data-e="🥂"></div>
+          <div class="ph ph-1" data-e="🎉"></div>
+          <div class="ph ph-5" data-e="💍"></div>
+          <div class="ph ph-6" data-e="🎶"></div>
+          <div class="ph ph-7" data-e="🌸"></div>
+          <div class="ph ph-2" data-e="✨"></div>
+          <div class="ph ph-8 big" data-e="🎂"></div>
+          <div class="ph ph-1" data-e="🕺"></div>
+          <div class="ph ph-3" data-e="📷"></div>
+          <div class="tv-qr" aria-hidden="true">
+            <svg width="42" height="42" viewBox="0 0 21 21" shape-rendering="crispEdges">
+              <rect width="21" height="21" fill="#fff"/>
+              <path fill="#0F1220" d="M0 0h7v7H0zM2 2h3v3H2zM14 0h7v7h-7zM16 2h3v3h-3zM0 14h7v7H0zM2 16h3v3H2zM9 0h1v2H9zM11 1h1v3h-1zM9 3h2v1H9zM12 4h2v1h-2zM9 5h1v2H9zM11 6h2v1h-2zM0 9h2v1H0zM3 8h1v2H3zM5 9h3v1H5zM8 8h1v1H8zM10 8h2v2h-2zM13 9h1v2h-1zM15 8h2v1h-2zM18 8h1v2h-1zM20 9h1v2h-1zM1 11h2v1H1zM4 11h1v2H4zM6 12h2v1H6zM9 11h1v3H9zM11 12h2v2h-2zM14 12h1v1h-1zM16 11h2v1h-2zM19 12h2v1h-2zM8 14h1v2H8zM10 15h2v1h-2zM13 14h2v2h-2zM16 14h1v2h-1zM18 14h3v1h-3zM9 17h2v2H9zM12 17h1v3h-1zM14 17h2v1h-2zM17 17h2v2h-2zM20 16h1v3h-1zM8 19h1v2H8zM10 20h4v1h-4zM15 19h2v2h-2zM19 20h1v1h-1z"/>
+            </svg>
+            <small>PARTICIPEZ</small>
+          </div>
+        </div>
+        <div class="tv-base"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TYPES D'ÉVÉNEMENTS ============ -->
+<section id="evenements">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Pour chaque grand moment</span>
+      <h2>Un EventLens pour chaque occasion</h2>
+      <p>Des grands jours aux petites victoires, capturez-les tous.</p>
+    </div>
+    <div class="event-types">
+      <span class="chip">💍 Mariage</span>
+      <span class="chip">🎂 Anniversaire</span>
+      <span class="chip">🍼 Baby shower</span>
+      <span class="chip">🎓 Remise de diplômes</span>
+      <span class="chip">💐 Fiançailles</span>
+      <span class="chip">🎉 Soirée</span>
+      <span class="chip">🏢 Corporate</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TARIFS ============ -->
+<section id="tarifs">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Tarifs simples</span>
+      <h2>Un prix par événement, pas de surprise</h2>
+      <p>Commencez gratuitement, passez en Premium pour le grand jour.</p>
+    </div>
+    <div class="plans">
+
+      <div class="plan">
+        <h3>Découverte</h3>
+        <p class="plan-desc">Pour tester EventLens sur une petite fête.</p>
+        <div class="price">Gratuit</div>
+        <ul>
+          <li>Jusqu'à 30 invités</li>
+          <li>150 photos</li>
+          <li>Modération IA (filtre NSFW)</li>
+          <li>Galerie live &amp; QR code</li>
+          <li>Rétention 7 jours</li>
+        </ul>
+        <a href="#" class="btn btn-ghost">Commencer gratuitement</a>
+      </div>
+
+      <div class="plan plan-featured">
+        <span class="plan-badge">Le plus populaire</span>
+        <h3>Pass Événement Premium</h3>
+        <p class="plan-desc">Tout EventLens, pour un événement inoubliable.</p>
+        <div class="price">39 € <small>/ événement</small></div>
+        <ul>
+          <li>Invités &amp; photos illimités</li>
+          <li>Qualité HD</li>
+          <li>Selfie-Match</li>
+          <li>Photo wall sans filigrane</li>
+          <li>Albums intelligents par IA</li>
+          <li>Rétention 60 jours</li>
+        </ul>
+        <a href="#" class="btn btn-primary">Créer mon événement</a>
+      </div>
+
+      <div class="plan">
+        <h3>Pro &amp; Agences</h3>
+        <p class="plan-desc">Pour les organisateurs, lieux et wedding planners.</p>
+        <div class="price">dès 49 € <small>/ mois</small></div>
+        <ul>
+          <li>Marque blanche</li>
+          <li>Événements multiples</li>
+          <li>Analytics détaillés</li>
+          <li>Support prioritaire</li>
+        </ul>
+        <a href="mailto:walidgaddouch@yahoo.fr" class="btn btn-ghost">Nous contacter</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ MULTILINGUE ============ -->
+<section id="langues">
+  <div class="wrap section-head" style="margin-bottom:0">
+    <span class="kicker">Pour tous vos invités</span>
+    <h2>Disponible en 7 langues</h2>
+    <p>Vos invités participent dans leur langue, où qu'ils viennent.</p>
+    <div class="langs">
+      <span class="lang">🇫🇷 FR</span>
+      <span class="lang">🇬🇧 EN</span>
+      <span class="lang">🇳🇱 NL</span>
+      <span class="lang">🇸🇦 AR</span>
+      <span class="lang">🇵🇭 TL</span>
+      <span class="lang">🇪🇸 ES</span>
+      <span class="lang">🇮🇳 HI</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">On répond à tout</span>
+      <h2>Questions fréquentes</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>Les invités doivent-ils installer une application ?</summary>
+        <p>Non. EventLens fonctionne entièrement dans le navigateur : les invités scannent le QR code de l'événement et envoient leurs photos immédiatement, sans installation ni création de compte.</p>
+      </details>
+      <details>
+        <summary>Les photos sont-elles modérées ?</summary>
+        <p>Oui. Chaque photo et vidéo passe par notre modération IA automatique — filtre NSFW inclus dès l'offre gratuite — avant d'apparaître dans la galerie et sur le mur photo. Vous gardez la main pour retirer un contenu à tout moment.</p>
+      </details>
+      <details>
+        <summary>Combien de temps les photos sont-elles conservées ?</summary>
+        <p>7 jours avec l'offre Découverte et 60 jours avec le Pass Événement Premium. À l'échéance, tout est purgé automatiquement, conformément au RGPD. Vous pouvez bien sûr tout télécharger avant.</p>
+      </details>
+      <details>
+        <summary>Le Selfie-Match est-il respectueux de la vie privée ?</summary>
+        <p>Oui. Le Selfie-Match est strictement opt-in : chaque invité choisit lui-même de l'activer. Les données biométriques servent uniquement à retrouver ses propres photos et sont purgées automatiquement à la fin de la rétention.</p>
+      </details>
+      <details>
+        <summary>Puis-je projeter les photos pendant la fête ?</summary>
+        <p>Absolument. Le photo wall affiche la galerie en diaporama live sur n'importe quel écran ou vidéoprojecteur, avec le QR code de participation intégré pour inciter tout le monde à contribuer en direct.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA FINAL ============ -->
+<section>
+  <div class="wrap">
+    <div class="final-cta">
+      <h2>Prêt à capturer <span class="grad-text">chaque instant</span> ?</h2>
+      <p>Créez votre événement en deux minutes. Vos invités s'occupent du reste.</p>
+      <a href="#tarifs" class="btn btn-primary">Créer mon événement 🎉</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap foot">
+    <div class="logo" style="font-size:1.05rem"><span class="logo-mark" style="width:28px;height:28px;font-size:.85rem">📸</span>EventLens</div>
+    <nav class="foot-links" aria-label="Liens de pied de page">
+      <a href="#comment">Comment ça marche</a>
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#faq">FAQ</a>
+      <a href="./join.html">Rejoindre un événement</a>
+      <a href="./privacy.html">Confidentialité</a>
+      <a href="./terms.html">Conditions d'utilisation</a>
+      <a href="./support.html">Assistance</a>
+    </nav>
+    <div>
+      <a href="mailto:walidgaddouch@yahoo.fr">walidgaddouch@yahoo.fr</a>
+      <span style="margin-left:16px">© 2026 EventLens</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
