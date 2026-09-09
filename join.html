@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0F1220" />
+<title>EventLens — Rejoindre un événement</title>
+<style>
+  :root {
+    --bg: #0F1220;
+    --card: #181C2F;
+    --card-2: #1F2440;
+    --text: #F2F3F8;
+    --muted: #9AA0B8;
+    --violet: #6D5DF6;
+    --rose: #FF5E9C;
+    --orange: #FF9A3D;
+    --ok: #4CD98A;
+    --err: #FF6B6B;
+    --grad: linear-gradient(90deg, var(--violet), var(--rose), var(--orange));
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { min-height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding: 0 16px calc(32px + env(safe-area-inset-bottom));
+    background-image:
+      radial-gradient(600px 300px at 85% -60px, rgba(109, 93, 246, 0.22), transparent 70%),
+      radial-gradient(500px 260px at 0% 110%, rgba(255, 94, 156, 0.10), transparent 70%);
+    background-attachment: fixed;
+  }
+  .wrap { max-width: 560px; margin: 0 auto; }
+
+  header { text-align: center; padding: 32px 8px 20px; }
+  .logo {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .tagline { margin-top: 6px; color: var(--muted); font-size: 15px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 20px;
+    padding: 22px 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+  .card h2 { font-size: 18px; margin-bottom: 14px; }
+  label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
+  label:first-of-type { margin-top: 0; }
+
+  input[type="text"] {
+    width: 100%;
+    background: var(--card-2);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 14px;
+    color: var(--text);
+    font-size: 17px;
+    padding: 14px 16px;
+    outline: none;
+  }
+  input[type="text"]:focus { border-color: var(--violet); }
+  #code {
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    font-weight: 700;
+    font-size: 22px;
+    text-align: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 18px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--grad);
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: opacity 0.15s, transform 0.05s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { opacity: 0.5; cursor: default; }
+
+  .msg { margin-top: 14px; font-size: 14px; border-radius: 12px; padding: 12px 14px; display: none; line-height: 1.45; }
+  .msg.err { display: block; background: rgba(255, 107, 107, 0.12); color: var(--err); border: 1px solid rgba(255, 107, 107, 0.35); }
+  .msg.ok  { display: block; background: rgba(76, 217, 138, 0.10); color: var(--ok);  border: 1px solid rgba(76, 217, 138, 0.35); }
+  .msg.info { display: block; background: rgba(109, 93, 246, 0.12); color: #B9B0FF; border: 1px solid rgba(109, 93, 246, 0.35); }
+
+  .event-name { font-size: 22px; font-weight: 800; }
+  .event-sub { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+  .drop {
+    margin-top: 16px;
+    border: 2px dashed rgba(255, 255, 255, 0.18);
+    border-radius: 18px;
+    background: var(--card-2);
+    padding: 30px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .drop.over { border-color: var(--rose); background: rgba(255, 94, 156, 0.08); }
+  .drop .big { font-size: 38px; }
+  .drop p { margin-top: 8px; font-size: 15px; }
+  .drop small { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; }
+
+  #fileInput { display: none; }
+
+  #progress { margin-top: 8px; }
+  .counter { font-size: 14px; color: var(--muted); margin: 14px 2px 8px; display: none; }
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card-2);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 10px;
+    margin-top: 8px;
+  }
+  .thumb {
+    width: 52px; height: 52px;
+    border-radius: 10px;
+    object-fit: cover;
+    background: #0F1220;
+    flex: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+  .item .meta { flex: 1; min-width: 0; }
+  .item .name { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar { height: 5px; border-radius: 3px; background: rgba(255, 255, 255, 0.10); margin-top: 7px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0%; border-radius: 3px; background: var(--grad); transition: width 0.3s; }
+  .state { font-size: 12px; margin-top: 5px; color: var(--muted); }
+  .state.ok { color: var(--ok); }
+  .state.err { color: var(--err); }
+
+  footer { text-align: center; margin-top: 26px; }
+  footer a { color: var(--muted); font-size: 13px; text-decoration: none; }
+  footer a:hover { color: var(--text); }
+
+  .room-badge {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(109, 93, 246, 0.18);
+    border: 1px solid rgba(109, 93, 246, 0.45);
+    color: #B9B0FF;
+  }
+  #roomChoice h2 { font-size: 18px; margin-top: 18px; }
+  .room-btn { padding: 22px 16px; font-size: 19px; }
+
+  .hidden { display: none !important; }
+  .spin {
+    display: inline-block; width: 14px; height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-top-color: var(--rose);
+    border-radius: 50%;
+    animation: sp 0.8s linear infinite;
+    vertical-align: -2px;
+    margin-right: 6px;
+  }
+  @keyframes sp { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">EventLens</div>
+    <div class="tagline">Partagez l&rsquo;instant, en direct.</div>
+  </header>
+
+  <!-- Étape 1 : rejoindre -->
+  <section class="card" id="joinCard">
+    <h2>Rejoindre l&rsquo;événement</h2>
+    <label for="code">Code de l&rsquo;événement (6 caractères)</label>
+    <input type="text" id="code" maxlength="6" autocomplete="off" autocapitalize="characters"
+           spellcheck="false" inputmode="text" placeholder="ABC123" />
+    <label for="pseudo">Votre pseudo (facultatif)</label>
+    <input type="text" id="pseudo" maxlength="40" autocomplete="nickname" placeholder="Ex. Tante Leïla" />
+    <button class="btn" id="joinBtn">Rejoindre</button>
+    <div class="msg" id="joinMsg"></div>
+  </section>
+
+  <!-- Étape 2 : envoyer -->
+  <section class="card hidden" id="uploadCard">
+    <div class="event-name" id="eventName"></div>
+    <div class="event-sub">Vous participez à cet événement 🎉</div>
+    <div class="room-badge hidden" id="roomBadge"></div>
+    <div class="msg" id="eventMsg"></div>
+
+    <!-- Choix de la salle (galeries séparées) -->
+    <div id="roomChoice" class="hidden">
+      <h2>Choisissez votre salle</h2>
+      <div id="roomButtons"></div>
+      <div class="msg" id="roomMsg"></div>
+    </div>
+
+    <div id="uploadZone">
+      <div class="drop" id="drop">
+        <div class="big">📸</div>
+        <p><strong>Touchez ici</strong> pour choisir vos photos et vidéos<br />ou déposez-les dans cette zone</p>
+        <small>Photos illimitées en taille (recompressées) &middot; vidéos : 30 s et 60 Mo max</small>
+      </div>
+      <input type="file" id="fileInput" accept="image/*,video/*" multiple />
+
+      <label for="caption">Légende (facultative, appliquée à la première photo)</label>
+      <input type="text" id="caption" maxlength="200" placeholder="Un petit mot avec vos photos…" />
+
+      <div class="counter" id="counter"></div>
+      <div id="progress"></div>
+      <div class="msg" id="doneMsg"></div>
+    </div>
+  </section>
+
+  <footer><a href="./index.html">&larr; En savoir plus sur EventLens</a></footer>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL = 'https://qxvbzlqqlezjmvwgzbyi.supabase.co';
+  const SUPABASE_ANON_KEY =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF4dmJ6bHFxbGV6am12d2d6YnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MjU3ODgsImV4cCI6MjA5ODQwMTc4OH0.zqoYlWrAGKq19ZVYRuGcNFrqaSuKQj9IZN_icHeS8vM';
+
+  const MAX_IMAGE_WIDTH = 2560;
+  const JPEG_QUALITY = 0.88;
+  const MAX_VIDEO_SECONDS = 30;
+  const MAX_VIDEO_BYTES = 60 * 1024 * 1024;
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const $ = (id) => document.getElementById(id);
+  const joinCard = $('joinCard'), uploadCard = $('uploadCard');
+  const codeInput = $('code'), pseudoInput = $('pseudo'), joinBtn = $('joinBtn'), joinMsg = $('joinMsg');
+  const eventNameEl = $('eventName'), eventMsg = $('eventMsg'), uploadZone = $('uploadZone');
+  const drop = $('drop'), fileInput = $('fileInput'), captionInput = $('caption');
+  const counter = $('counter'), progress = $('progress'), doneMsg = $('doneMsg');
+  const roomChoice = $('roomChoice'), roomButtons = $('roomButtons'), roomMsg = $('roomMsg'), roomBadge = $('roomBadge');
+
+  let currentEvent = null;
+  let guestId = null;
+  let uploading = false;
+  let currentRoom = null;
+  let lastJoinParams = null;
+
+  // --- Identifiant appareil persistant (même clé que le flux mobile) ---
+  function deviceId() {
+    let id = localStorage.getItem('deviceId');
+    if (!id) {
+      id = 'web_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 12);
+      localStorage.setItem('deviceId', id);
+    }
+    return id;
+  }
+
+  function rid() {
+    return Date.now() + '_' + Math.random().toString(36).slice(2, 10);
+  }
+
+  function setMsg(el, kind, html) {
+    el.className = 'msg' + (kind ? ' ' + kind : '');
+    el.innerHTML = html || '';
+    if (!html) el.style.display = 'none'; else el.style.display = 'block';
+  }
+
+  // --- 1. Session anonyme ---
+  async function ensureAuth() {
+    const { data } = await supabase.auth.getSession();
+    if (data && data.session) return;
+    const { error } = await supabase.auth.signInAnonymously();
+    if (error) throw new Error('Connexion impossible : ' + error.message);
+  }
+
+  // --- 2. Pré-remplissage du code depuis ?code=XXXXXX ---
+  const urlCode = new URLSearchParams(location.search).get('code');
+  if (urlCode) codeInput.value = urlCode.toUpperCase().slice(0, 6);
+  codeInput.addEventListener('input', () => {
+    codeInput.value = codeInput.value.toUpperCase().replace(/\s/g, '');
+  });
+
+  // --- 3. Rejoindre l'événement ---
+  function joinErrorMessage(raw) {
+    const m = String(raw || '');
+    if (m.includes('guest_limit_reached')) return 'Cet événement est complet (30 invités en offre gratuite).';
+    if (m.includes('Code invalide')) return 'Code invalide';
+    if (m.toLowerCase().includes('banni')) return 'Accès refusé : vous avez été bloqué sur cet événement.';
+    return 'Impossible de rejoindre l’événement : ' + m;
+  }
+
+  async function join() {
+    const code = codeInput.value.trim().toUpperCase();
+    if (code.length !== 6) {
+      setMsg(joinMsg, 'err', 'Entrez le code à 6 caractères de l’événement.');
+      return;
+    }
+    joinBtn.disabled = true;
+    setMsg(joinMsg, 'info', '<span class="spin"></span>Connexion à l’événement…');
+    try {
+      await ensureAuth();
+      lastJoinParams = {
+        p_code: code,
+        p_pseudo: pseudoInput.value.trim() || null,
+        p_device: deviceId(),
+      };
+      const { data, error } = await supabase.rpc('join_event', lastJoinParams);
+      if (error) throw new Error(error.message);
+
+      guestId = data.guestId;
+      currentEvent = data.event;
+      currentRoom = data.room || null;
+      setMsg(joinMsg, '', '');
+      joinCard.classList.add('hidden');
+      uploadCard.classList.remove('hidden');
+      eventNameEl.textContent = currentEvent.name;
+
+      if (currentEvent.status !== 'open') {
+        uploadZone.classList.add('hidden');
+        roomChoice.classList.add('hidden');
+        setMsg(eventMsg, 'err', 'Événement clôturé — l’envoi de photos n’est plus possible.');
+      } else {
+        applyRoomState();
+      }
+    } catch (e) {
+      setMsg(joinMsg, 'err', joinErrorMessage(e.message));
+    } finally {
+      joinBtn.disabled = false;
+    }
+  }
+  joinBtn.addEventListener('click', join);
+  [codeInput, pseudoInput].forEach((el) =>
+    el.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') join(); })
+  );
+
+  // --- 3b. Galeries séparées (salles) ---
+  function applyRoomState() {
+    const rooms = currentEvent && currentEvent.rooms;
+    if (Array.isArray(rooms) && rooms.length > 0 && !currentRoom) {
+      // L'invité doit d'abord choisir sa salle.
+      uploadZone.classList.add('hidden');
+      roomChoice.classList.remove('hidden');
+      renderRoomButtons(rooms);
+    } else {
+      roomChoice.classList.add('hidden');
+      uploadZone.classList.remove('hidden');
+      if (currentRoom) {
+        roomBadge.textContent = '📍 ' + currentRoom;
+        roomBadge.classList.remove('hidden');
+      }
+    }
+  }
+
+  function renderRoomButtons(rooms) {
+    roomButtons.innerHTML = '';
+    rooms.forEach((room) => {
+      const btn = document.createElement('button');
+      btn.className = 'btn room-btn';
+      btn.type = 'button';
+      btn.textContent = room;
+      btn.addEventListener('click', () => chooseRoom(room));
+      roomButtons.appendChild(btn);
+    });
+  }
+
+  async function chooseRoom(room) {
+    const btns = roomButtons.querySelectorAll('button');
+    btns.forEach((b) => { b.disabled = true; });
+    setMsg(roomMsg, 'info', '<span class="spin"></span>Enregistrement de votre salle…');
+    try {
+      const { data, error } = await supabase.rpc('join_event', {
+        ...lastJoinParams,
+        p_room: room,
+      });
+      if (error) throw new Error(error.message);
+      // Le choix est définitif côté serveur : on garde la salle renvoyée.
+      currentRoom = data.room || room;
+      if (data.event) currentEvent = data.event;
+      setMsg(roomMsg, '', '');
+      applyRoomState();
+    } catch (e) {
+      setMsg(roomMsg, 'err', 'Impossible d’enregistrer la salle : ' + e.message + '<br />Réessayez.');
+      btns.forEach((b) => { b.disabled = false; });
+    }
+  }
+
+  // --- 4. Sélection des fichiers : clic + drag & drop ---
+  drop.addEventListener('click', () => { if (!uploading) fileInput.click(); });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files && fileInput.files.length) handleFiles(Array.from(fileInput.files));
+    fileInput.value = '';
+  });
+  ['dragenter', 'dragover'].forEach((t) =>
+    drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add('over'); })
+  );
+  ['dragleave', 'drop'].forEach((t) =>
+    drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove('over'); })
+  );
+  drop.addEventListener('drop', (e) => {
+    if (uploading) return;
+    const files = Array.from(e.dataTransfer && e.dataTransfer.files ? e.dataTransfer.files : []);
+    if (files.length) handleFiles(files);
+  });
+
+  // --- 5a. Recompression des images via canvas ---
+  function loadImage(file) {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => resolve({ img, url });
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Image illisible')); };
+      img.src = url;
+    });
+  }
+
+  async function compressImage(file) {
+    const { img, url } = await loadImage(file);
+    try {
+      const scale = Math.min(1, MAX_IMAGE_WIDTH / img.naturalWidth);
+      const w = Math.max(1, Math.round(img.naturalWidth * scale));
+      const h = Math.max(1, Math.round(img.naturalHeight * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      const blob = await new Promise((res) => canvas.toBlob(res, 'image/jpeg', JPEG_QUALITY));
+      if (!blob) throw new Error('Compression impossible');
+      return blob;
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+
+  // --- 5b. Contrôle des vidéos (durée / taille) ---
+  function videoDuration(file) {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const v = document.createElement('video');
+      v.preload = 'metadata';
+      v.onloadedmetadata = () => { const d = v.duration; URL.revokeObjectURL(url); resolve(d); };
+      v.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Vidéo illisible')); };
+      v.src = url;
+    });
+  }
+
+  // --- UI de progression par fichier ---
+  function makeItem(file) {
+    const item = document.createElement('div');
+    item.className = 'item';
+    const isImage = file.type.startsWith('image/');
+    let thumbHtml;
+    if (isImage) {
+      thumbHtml = '<img class="thumb" alt="" />';
+    } else {
+      thumbHtml = '<div class="thumb">🎬</div>';
+    }
+    item.innerHTML =
+      thumbHtml +
+      '<div class="meta">' +
+      '<div class="name"></div>' +
+      '<div class="bar"><i></i></div>' +
+      '<div class="state">En attente…</div>' +
+      '</div>';
+    item.querySelector('.name').textContent = file.name;
+    if (isImage) {
+      const url = URL.createObjectURL(file);
+      const imgEl = item.querySelector('img.thumb');
+      imgEl.onload = () => URL.revokeObjectURL(url);
+      imgEl.src = url;
+    }
+    progress.appendChild(item);
+    return {
+      setProgress(pct) { item.querySelector('.bar i').style.width = pct + '%'; },
+      setState(text, kind) {
+        const s = item.querySelector('.state');
+        s.textContent = text;
+        s.className = 'state' + (kind ? ' ' + kind : '');
+      },
+    };
+  }
+
+  function insertErrorMessage(raw) {
+    const m = String(raw || '');
+    if (m.includes('photo_limit_reached')) return 'Limite de photos atteinte (150 en offre gratuite)';
+    return 'Erreur : ' + m;
+  }
+
+  // --- 6. Traitement + upload d'un lot de fichiers ---
+  async function uploadOne(file, ui, caption) {
+    const isImage = file.type.startsWith('image/');
+    const isVideo = file.type.startsWith('video/');
+    if (!isImage && !isVideo) throw new Error('Format non pris en charge (photo ou vidéo uniquement)');
+
+    let blob, ext, contentType;
+    if (isImage) {
+      ui.setState('Compression…');
+      ui.setProgress(15);
+      blob = await compressImage(file);
+      ext = 'jpg';
+      contentType = 'image/jpeg';
+    } else {
+      ui.setState('Vérification de la vidéo…');
+      ui.setProgress(10);
+      if (file.size > MAX_VIDEO_BYTES) throw new Error('Vidéo trop lourde (60 Mo maximum)');
+      const dur = await videoDuration(file);
+      if (isFinite(dur) && dur > MAX_VIDEO_SECONDS) {
+        throw new Error('Vidéo trop longue (' + Math.round(dur) + ' s, maximum 30 s)');
+      }
+      blob = file;
+      ext = 'mp4';
+      contentType = 'video/mp4';
+    }
+
+    ui.setState('Envoi…');
+    ui.setProgress(45);
+    const storagePath = currentEvent.id + '/' + rid() + '.' + ext;
+    const { error: upErr } = await supabase.storage
+      .from('event-media')
+      .upload(storagePath, blob, { contentType, upsert: false });
+    if (upErr) throw new Error(upErr.message);
+
+    ui.setProgress(80);
+    const { data: row, error: insErr } = await supabase
+      .from('photos')
+      .insert({
+        event_id: currentEvent.id,
+        guest_id: guestId,
+        storage_path: storagePath,
+        caption: caption || null,
+        status: 'processing',
+      })
+      .select()
+      .single();
+    if (insErr) throw new Error(insErr.message);
+
+    // Modération IA en arrière-plan — on n'attend pas la réponse.
+    supabase.functions.invoke('moderate-photo', { body: { photoId: row.id } }).catch(() => {});
+
+    ui.setProgress(100);
+    ui.setState('Envoyé ✓', 'ok');
+  }
+
+  async function handleFiles(files) {
+    if (!currentEvent || uploading) return;
+    if (currentEvent.status !== 'open') {
+      setMsg(doneMsg, 'err', 'Événement clôturé — l’envoi de photos n’est plus possible.');
+      return;
+    }
+    uploading = true;
+    drop.style.opacity = '0.5';
+    setMsg(doneMsg, '', '');
+    progress.innerHTML = '';
+    counter.style.display = 'block';
+
+    const caption = captionInput.value.trim();
+    let sent = 0, failed = 0, stopAll = false;
+    const items = files.map((f) => makeItem(f));
+    counter.textContent = '0 / ' + files.length + ' envoyé(s)';
+
+    for (let i = 0; i < files.length; i++) {
+      if (stopAll) { items[i].setState('Annulé (limite atteinte)', 'err'); failed++; continue; }
+      try {
+        // La légende ne s'applique qu'au premier fichier du lot.
+        await uploadOne(files[i], items[i], i === 0 ? caption : null);
+        sent++;
+      } catch (e) {
+        failed++;
+        const msg = insertErrorMessage(e.message);
+        items[i].setState(msg, 'err');
+        items[i].setProgress(0);
+        if (String(e.message).includes('photo_limit_reached')) stopAll = true;
+      }
+      counter.textContent = sent + ' / ' + files.length + ' envoyé(s)' + (failed ? ' · ' + failed + ' en erreur' : '');
+    }
+
+    if (sent > 0) {
+      setMsg(doneMsg, 'ok', 'Vos photos sont envoyées ! Elles apparaîtront après modération.' +
+        (failed ? '<br />(' + failed + ' fichier(s) n’ont pas pu être envoyés.)' : ''));
+    } else if (failed > 0) {
+      setMsg(doneMsg, 'err', 'Aucun fichier n’a pu être envoyé. Réessayez.');
+    }
+
+    captionInput.value = '';
+    uploading = false;
+    drop.style.opacity = '';
+  }
+</script>
+</body>
+</html>
