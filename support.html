@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EventLens — Assistance / Support</title>
+<meta name="description" content="Contacter l'assistance EventLens, signaler un contenu, supprimer son compte. Contact EventLens support, report content, delete your account.">
+<style>
+  :root{
+    --bg:#0F1220; --bg-card:#1A2038; --border:rgba(255,255,255,.08);
+    --text:#F2F3F8; --muted:#A6ACC4; --violet:#6D5DF6; --rose:#FF5E9C;
+    --grad:linear-gradient(100deg,#6D5DF6 0%,#FF5E9C 52%,#FF9A3D 100%);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);line-height:1.7;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  a{color:var(--rose)}
+  .wrap{max-width:780px;margin:0 auto;padding:40px 20px 80px}
+  .brand{display:inline-block;font-weight:800;font-size:1.35rem;margin-bottom:6px;
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  h1{font-size:clamp(1.6rem,4vw,2.2rem);letter-spacing:-.02em;margin:14px 0 6px}
+  h2{font-size:1.15rem;margin:34px 0 10px;color:#fff}
+  h3{font-size:1rem;margin:20px 0 6px;color:var(--muted)}
+  p,li{color:var(--muted);margin-bottom:10px}
+  ul{padding-left:22px}
+  .updated{color:var(--muted);font-size:.9rem}
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin:22px 0}
+  .todo{border-color:rgba(255,94,156,.5);background:rgba(255,94,156,.07)}
+  .todo strong{color:var(--rose)}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.95rem}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:top}
+  th{color:#fff;font-weight:700}
+  .tabs{display:flex;gap:8px;margin:22px 0 8px}
+  .tabs button{padding:8px 18px;border-radius:999px;border:1px solid var(--border);
+    background:rgba(255,255,255,.05);color:var(--text);font-weight:700;cursor:pointer;font-size:.9rem}
+  .tabs button.on{background:var(--grad);border-color:transparent;color:#fff}
+  [hidden]{display:none!important}
+  footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--border);font-size:.9rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" class="brand">EventLens</a>
+
+  <div class="tabs">
+    <button id="btn-fr" class="on" onclick="pick('fr')">Français</button>
+    <button id="btn-en" onclick="pick('en')">English</button>
+  </div>
+
+  <!-- ================= FRANÇAIS ================= -->
+  <section id="fr">
+    <h1>Assistance</h1>
+
+    <div class="card">
+      <h3 style="margin-top:0">Nous écrire</h3>
+      <p style="margin-bottom:0">
+        <a href="mailto:support@eventlens.social-networking.me">support@eventlens.social-networking.me</a><br>
+        Réponse sous 48 h ouvrées. Signalements de contenu : sous 24 h.
+      </p>
+    </div>
+
+    <h2>Signaler une photo</h2>
+    <p>
+      Dans l'application, ouvrez la photo en plein écran et touchez l'icône <strong>drapeau</strong> en
+      haut à droite. La photo est masquée immédiatement et l'organisateur en est informé. Vous pouvez
+      aussi bloquer la personne qui l'a envoyée depuis le même menu.
+    </p>
+    <p>
+      Si la photo vous représente et que vous n'êtes pas invité de l'événement, écrivez-nous avec le
+      code de l'événement : nous la retirons.
+    </p>
+
+    <h2>Supprimer mon compte</h2>
+    <p>
+      Application → <strong>Compte</strong> → <strong>Supprimer mon compte</strong>. Cela efface
+      définitivement votre compte, les événements que vous organisez avec toutes leurs photos, vos
+      envois et votre empreinte faciale. Aucune démarche par e-mail n'est nécessaire.
+    </p>
+
+    <h2>Questions fréquentes</h2>
+    <h3>Faut-il installer l'application pour envoyer des photos ?</h3>
+    <p>Non. Le QR code de l'événement ouvre une page web d'envoi, sans installation ni compte.</p>
+    <h3>Qui voit mes photos ?</h3>
+    <p>Uniquement les autres invités du même événement, après approbation. Jamais le grand public.</p>
+    <h3>Combien de temps les photos sont-elles conservées ?</h3>
+    <p>7 jours après la clôture en offre gratuite, 60 jours en Premium.</p>
+    <h3>Puis-je utiliser l'application sans reconnaissance faciale ?</h3>
+    <p>Oui. Le Selfie-Match est facultatif et demande un consentement explicite.</p>
+
+    <footer>
+      <a href="index.html">EventLens</a> ·
+      <a href="privacy.html">Politique de confidentialité</a> ·
+      <a href="terms.html">Conditions d'utilisation</a>
+    </footer>
+  </section>
+
+  <!-- ================= ENGLISH ================= -->
+  <section id="en" hidden>
+    <h1>Support</h1>
+
+    <div class="card">
+      <h3 style="margin-top:0">Contact us</h3>
+      <p style="margin-bottom:0">
+        <a href="mailto:support@eventlens.social-networking.me">support@eventlens.social-networking.me</a><br>
+        Reply within 48 business hours. Content reports: within 24 hours.
+      </p>
+    </div>
+
+    <h2>Report a photo</h2>
+    <p>
+      In the app, open the photo full screen and tap the <strong>flag</strong> icon at the top right.
+      The photo is hidden immediately and the organizer is notified. You can also block the person who
+      uploaded it from the same menu.
+    </p>
+    <p>
+      If the photo shows you and you are not a guest of that event, write to us with the event code and
+      we will take it down.
+    </p>
+
+    <h2>Delete my account</h2>
+    <p>
+      App → <strong>Account</strong> → <strong>Delete my account</strong>. This permanently erases your
+      account, the events you organize along with all their photos, your uploads and your face
+      template. No email request is needed.
+    </p>
+
+    <h2>Frequently asked</h2>
+    <h3>Do I need to install the app to send photos?</h3>
+    <p>No. The event QR code opens a web upload page — no install, no account.</p>
+    <h3>Who can see my photos?</h3>
+    <p>Only the other guests of the same event, once approved. Never the general public.</p>
+    <h3>How long are photos kept?</h3>
+    <p>7 days after the event closes on the free tier, 60 days on Premium.</p>
+    <h3>Can I use the app without face recognition?</h3>
+    <p>Yes. Selfie-Match is optional and requires explicit consent.</p>
+
+    <footer>
+      <a href="index.html">EventLens</a> ·
+      <a href="privacy.html">Privacy Policy</a> ·
+      <a href="terms.html">Terms of Use</a>
+    </footer>
+  </section>
+</div>
+
+<script>
+  function pick(l){
+    document.getElementById('fr').hidden = l !== 'fr';
+    document.getElementById('en').hidden = l !== 'en';
+    document.getElementById('btn-fr').classList.toggle('on', l === 'fr');
+    document.getElementById('btn-en').classList.toggle('on', l === 'en');
+    document.documentElement.lang = l;
+  }
+  if ((navigator.language || 'fr').slice(0,2) !== 'fr') pick('en');
+</script>
+</body>
+</html>
