@@ -351,6 +351,11 @@
   .foot-links{display:flex;flex-wrap:wrap;gap:20px}
   .foot-links a:hover{color:var(--text)}
   .foot a[href^="mailto"]{color:var(--rose);font-weight:600}
+  .langbar{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;padding:10px 0 4px}
+  .langbar button{all:unset;cursor:pointer;font-size:18px;line-height:1;padding:6px 8px;
+    border-radius:10px;border:1px solid var(--border)}
+  .langbar button[aria-pressed="true"]{border-color:var(--border-strong);background:rgba(255,255,255,.08)}
+  [dir="rtl"] .hero-visual, [dir="rtl"] .iconStrip{direction:ltr}
 </style>
 </head>
 <body>
@@ -360,24 +365,24 @@
   <div class="wrap nav">
     <a href="./" class="logo"><img src="./logo.png" alt="" class="logo-mark" width="34" height="34">EventLens</a>
     <nav class="nav-links" aria-label="Navigation principale">
-      <a href="#comment">Comment ça marche</a>
-      <a href="#fonctionnalites">Fonctionnalités</a>
-      <a href="#photowall">Mur photo</a>
-      <a href="#tarifs">Tarifs</a>
-      <a href="#faq">FAQ</a>
+      <a href="#comment" data-i18n="idx.001">Comment ça marche</a>
+      <a href="#fonctionnalites" data-i18n="idx.002">Fonctionnalités</a>
+      <a href="#photowall" data-i18n="idx.003">Mur photo</a>
+      <a href="#tarifs" data-i18n="idx.004">Tarifs</a>
+      <a href="#faq" data-i18n="idx.005">FAQ</a>
     </nav>
-    <a href="#tarifs" class="btn btn-primary btn-sm nav-cta">Créer mon événement</a>
+    <a href="#tarifs" class="btn btn-primary btn-sm nav-cta" data-i18n="idx.006">Créer mon événement</a>
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu">
       <span></span><span></span><span></span>
     </button>
   </div>
   <nav class="mobile-menu" id="mobile-menu" aria-label="Navigation mobile">
-    <a href="#comment">Comment ça marche</a>
-    <a href="#fonctionnalites">Fonctionnalités</a>
-    <a href="#photowall">Mur photo</a>
-    <a href="#tarifs">Tarifs</a>
-    <a href="#faq">FAQ</a>
-    <a href="#tarifs" class="btn btn-primary btn-sm">Créer mon événement</a>
+    <a href="#comment" data-i18n="idx.001">Comment ça marche</a>
+    <a href="#fonctionnalites" data-i18n="idx.002">Fonctionnalités</a>
+    <a href="#photowall" data-i18n="idx.003">Mur photo</a>
+    <a href="#tarifs" data-i18n="idx.004">Tarifs</a>
+    <a href="#faq" data-i18n="idx.005">FAQ</a>
+    <a href="#tarifs" class="btn btn-primary btn-sm" data-i18n="idx.006">Créer mon événement</a>
   </nav>
 </header>
 <script>
@@ -399,21 +404,21 @@
 <section class="hero">
   <div class="wrap">
     <div>
-      <span class="kicker">Photos d'événements en temps réel</span>
-      <h1>Partagez l'instant, <span class="grad-text">en direct.</span></h1>
-      <p class="hero-sub">
+      <span class="kicker" data-i18n="idx.007">Photos d'événements en temps réel</span>
+      <h1 data-i18n-html="idx.h1">Partagez l'instant, <span class="grad-text">en direct.</span></h1>
+      <p class="hero-sub" data-i18n-html="idx.lede">
         EventLens collecte <strong>toutes les photos de votre événement</strong> en un seul endroit.
         Vos invités rejoignent par simple <strong>QR code</strong> — sans installer d'app, sans créer de compte —
         et chaque souvenir arrive en direct dans votre galerie.
       </p>
       <div class="hero-ctas">
-        <a href="#tarifs" class="btn btn-primary">Créer mon événement 🎉</a>
-        <a href="./join.html" class="btn btn-ghost">Rejoindre un événement</a>
+        <a href="#tarifs" class="btn btn-primary" data-i18n="idx.008">Créer mon événement 🎉</a>
+        <a href="./join.html" class="btn btn-ghost" data-i18n="idx.009">Rejoindre un événement</a>
       </div>
       <div class="hero-trust">
-        <span>✅ Sans app ni compte pour les invités</span>
-        <span>🛡️ Modération IA incluse</span>
-        <span>🇪🇺 Conforme RGPD</span>
+        <span data-i18n="idx.010">✅ Sans app ni compte pour les invités</span>
+        <span data-i18n="idx.011">🛡️ Modération IA incluse</span>
+        <span data-i18n="idx.012">🇪🇺 Conforme RGPD</span>
       </div>
     </div>
 
@@ -422,8 +427,8 @@
         <div class="phone-notch"></div>
         <div class="phone-screen">
           <div class="app-bar">
-            <span>Mariage de Léa &amp; Sami</span>
-            <span class="dot">Live</span>
+            <span data-i18n="idx.013">Mariage de Léa &amp; Sami</span>
+            <span class="dot" data-i18n="idx.014">Live</span>
           </div>
           <div class="photo-grid">
             <div class="ph ph-1 big" data-e="💍"></div>
@@ -437,14 +442,14 @@
             <div class="ph ph-2" data-e="📷"></div>
             <div class="ph ph-6" data-e="🎁"></div>
           </div>
-          <div class="phone-toast">📤 Nouvelle photo de Karim · à l'instant</div>
+          <div class="phone-toast" data-i18n="idx.015">📤 Nouvelle photo de Karim · à l'instant</div>
         </div>
         <div class="qr-float" aria-hidden="true">
           <svg width="64" height="64" viewBox="0 0 21 21" shape-rendering="crispEdges">
             <rect width="21" height="21" fill="#fff"/>
             <path fill="#0F1220" d="M0 0h7v7H0zM2 2h3v3H2zM14 0h7v7h-7zM16 2h3v3h-3zM0 14h7v7H0zM2 16h3v3H2zM9 0h1v2H9zM11 1h1v3h-1zM9 3h2v1H9zM12 4h2v1h-2zM9 5h1v2H9zM11 6h2v1h-2zM0 9h2v1H0zM3 8h1v2H3zM5 9h3v1H5zM8 8h1v1H8zM10 8h2v2h-2zM13 9h1v2h-1zM15 8h2v1h-2zM18 8h1v2h-1zM20 9h1v2h-1zM1 11h2v1H1zM4 11h1v2H4zM6 12h2v1H6zM9 11h1v3H9zM11 12h2v2h-2zM14 12h1v1h-1zM16 11h2v1h-2zM19 12h2v1h-2zM8 14h1v2H8zM10 15h2v1h-2zM13 14h2v2h-2zM16 14h1v2h-1zM18 14h3v1h-3zM9 17h2v2H9zM12 17h1v3h-1zM14 17h2v1h-2zM17 17h2v2h-2zM20 16h1v3h-1zM8 19h1v2H8zM10 20h4v1h-4zM15 19h2v2h-2zM19 20h1v1h-1z"/>
           </svg>
-          <small>SCANNEZ-MOI</small>
+          <small data-i18n="idx.016">SCANNEZ-MOI</small>
         </div>
       </div>
     </div>
@@ -455,25 +460,25 @@
 <section id="comment">
   <div class="wrap">
     <div class="section-head">
-      <span class="kicker">Simple comme un sourire</span>
-      <h2>Comment ça marche</h2>
-      <p>De la création à la projection, trois étapes suffisent pour ne plus jamais perdre une photo de fête.</p>
+      <span class="kicker" data-i18n="idx.017">Simple comme un sourire</span>
+      <h2 data-i18n="idx.001">Comment ça marche</h2>
+      <p data-i18n="idx.018">De la création à la projection, trois étapes suffisent pour ne plus jamais perdre une photo de fête.</p>
     </div>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
-        <h3>Créez votre événement</h3>
-        <p>Donnez-lui un nom, une date, un thème — puis affichez le QR code EventLens sur les tables, l'invitation ou l'écran d'accueil.</p>
+        <h3 data-i18n="idx.019">Créez votre événement</h3>
+        <p data-i18n="idx.020">Donnez-lui un nom, une date, un thème — puis affichez le QR code EventLens sur les tables, l'invitation ou l'écran d'accueil.</p>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <h3>Les invités scannent et partagent</h3>
-        <p>Un scan, et c'est parti : chacun envoie ses photos et vidéos courtes depuis son navigateur. Aucune app à installer, aucun compte à créer.</p>
+        <h3 data-i18n="idx.021">Les invités scannent et partagent</h3>
+        <p data-i18n="idx.022">Un scan, et c'est parti : chacun envoie ses photos et vidéos courtes depuis son navigateur. Aucune app à installer, aucun compte à créer.</p>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <h3>Tout arrive en direct</h3>
-        <p>Chaque contenu est modéré par IA puis rejoint la galerie live et le mur photo projeté. Vous profitez de la fête, EventLens s'occupe des souvenirs.</p>
+        <h3 data-i18n="idx.023">Tout arrive en direct</h3>
+        <p data-i18n="idx.024">Chaque contenu est modéré par IA puis rejoint la galerie live et le mur photo projeté. Vous profitez de la fête, EventLens s'occupe des souvenirs.</p>
       </div>
     </div>
   </div>
@@ -483,50 +488,50 @@
 <section id="fonctionnalites">
   <div class="wrap">
     <div class="section-head">
-      <span class="kicker">Tout est inclus</span>
-      <h2>Des fonctionnalités pensées pour la fête</h2>
-      <p>Puissant pour les organisateurs, magique pour les invités.</p>
+      <span class="kicker" data-i18n="idx.025">Tout est inclus</span>
+      <h2 data-i18n="idx.026">Des fonctionnalités pensées pour la fête</h2>
+      <p data-i18n="idx.027">Puissant pour les organisateurs, magique pour les invités.</p>
     </div>
     <div class="features">
       <div class="feature">
         <div class="feature-ico">📲</div>
-        <h3>QR code, sans app ni compte</h3>
-        <p>Vos invités scannent et participent immédiatement depuis leur navigateur. Zéro friction, même pour mamie.</p>
+        <h3 data-i18n="idx.028">QR code, sans app ni compte</h3>
+        <p data-i18n="idx.029">Vos invités scannent et participent immédiatement depuis leur navigateur. Zéro friction, même pour mamie.</p>
       </div>
       <div class="feature">
         <div class="feature-ico">🛡️</div>
-        <h3>Modération IA automatique</h3>
-        <p>Filtre NSFW actif dès l'offre gratuite : seuls les contenus appropriés rejoignent la galerie et le mur photo.</p>
+        <h3 data-i18n="idx.030">Modération IA automatique</h3>
+        <p data-i18n="idx.031">Filtre NSFW actif dès l'offre gratuite : seuls les contenus appropriés rejoignent la galerie et le mur photo.</p>
       </div>
       <div class="feature">
         <div class="feature-ico">🤳</div>
-        <h3>Selfie-Match</h3>
-        <p>Un selfie suffit pour retrouver toutes les photos où vous apparaissez. Fini de mendier les photos après la fête.</p>
+        <h3 data-i18n="idx.032">Selfie-Match</h3>
+        <p data-i18n="idx.033">Un selfie suffit pour retrouver toutes les photos où vous apparaissez. Fini de mendier les photos après la fête.</p>
       </div>
       <div class="feature">
         <div class="feature-ico">📺</div>
-        <h3>Photo wall &amp; diaporama live</h3>
-        <p>Projetez le flux en direct sur grand écran, avec le QR de participation intégré pour entraîner toute la salle.</p>
+        <h3 data-i18n="idx.034">Photo wall &amp; diaporama live</h3>
+        <p data-i18n="idx.035">Projetez le flux en direct sur grand écran, avec le QR de participation intégré pour entraîner toute la salle.</p>
       </div>
       <div class="feature">
         <div class="feature-ico">🗂️</div>
-        <h3>Albums intelligents</h3>
-        <p>L'IA classe automatiquement vos souvenirs par moments : cérémonie, cocktail, dîner, piste de danse…</p>
+        <h3 data-i18n="idx.036">Albums intelligents</h3>
+        <p data-i18n="idx.037">L'IA classe automatiquement vos souvenirs par moments : cérémonie, cocktail, dîner, piste de danse…</p>
       </div>
       <div class="feature">
         <div class="feature-ico">💌</div>
-        <h3>Livre d'or photo &amp; notes vocales</h3>
-        <p>Les invités laissent un message photo ou une note vocale : un livre d'or vivant que vous réécouterez avec émotion.</p>
+        <h3 data-i18n="idx.038">Livre d'or photo &amp; notes vocales</h3>
+        <p data-i18n="idx.039">Les invités laissent un message photo ou une note vocale : un livre d'or vivant que vous réécouterez avec émotion.</p>
       </div>
       <div class="feature">
         <div class="feature-ico">✨</div>
-        <h3>Amélioration d'image par IA</h3>
-        <p>Photo sombre ou floue ? Un geste suffit pour la sublimer, directement dans la galerie.</p>
+        <h3 data-i18n="idx.040">Amélioration d'image par IA</h3>
+        <p data-i18n="idx.041">Photo sombre ou floue ? Un geste suffit pour la sublimer, directement dans la galerie.</p>
       </div>
       <div class="feature">
         <div class="feature-ico">🇪🇺</div>
-        <h3>Conforme RGPD</h3>
-        <p>Purge automatique à l'échéance, données hébergées avec soin : vos souvenirs ne traînent jamais où il ne faut pas.</p>
+        <h3 data-i18n="idx.042">Conforme RGPD</h3>
+        <p data-i18n="idx.043">Purge automatique à l'échéance, données hébergées avec soin : vos souvenirs ne traînent jamais où il ne faut pas.</p>
       </div>
     </div>
   </div>
@@ -536,24 +541,24 @@
 <section id="photowall">
   <div class="wrap wall-grid">
     <div class="wall-copy">
-      <span class="kicker">L'effet waouh</span>
-      <h2>Le mur photo qui met l'ambiance</h2>
-      <p>
+      <span class="kicker" data-i18n="idx.044">L'effet waouh</span>
+      <h2 data-i18n="idx.045">Le mur photo qui met l'ambiance</h2>
+      <p data-i18n="idx.046">
         Projetez la galerie en direct sur écran géant ou vidéoprojecteur : chaque nouvelle photo
         apparaît en temps réel devant tous les invités, avec le QR code de participation incrusté.
       </p>
       <ul>
-        <li>Diaporama live qui se met à jour à chaque envoi</li>
-        <li>QR de participation intégré à l'écran — l'effet boule de neige garanti</li>
-        <li>Uniquement des contenus validés par la modération IA</li>
-        <li>Sans filigrane avec le Pass Événement Premium</li>
+        <li data-i18n="idx.047">Diaporama live qui se met à jour à chaque envoi</li>
+        <li data-i18n="idx.048">QR de participation intégré à l'écran — l'effet boule de neige garanti</li>
+        <li data-i18n="idx.049">Uniquement des contenus validés par la modération IA</li>
+        <li data-i18n="idx.050">Sans filigrane avec le Pass Événement Premium</li>
       </ul>
-      <a href="#tarifs" class="btn btn-primary">Créer mon événement</a>
+      <a href="#tarifs" class="btn btn-primary" data-i18n="idx.006">Créer mon événement</a>
     </div>
     <div>
       <div class="tv" role="img" aria-label="Mur photo EventLens projeté sur un grand écran">
         <div class="tv-screen">
-          <div class="tv-badge">Diaporama live</div>
+          <div class="tv-badge" data-i18n="idx.051">Diaporama live</div>
           <div class="ph ph-4 big" data-e="💃"></div>
           <div class="ph ph-3" data-e="🥂"></div>
           <div class="ph ph-1" data-e="🎉"></div>
@@ -569,7 +574,7 @@
               <rect width="21" height="21" fill="#fff"/>
               <path fill="#0F1220" d="M0 0h7v7H0zM2 2h3v3H2zM14 0h7v7h-7zM16 2h3v3h-3zM0 14h7v7H0zM2 16h3v3H2zM9 0h1v2H9zM11 1h1v3h-1zM9 3h2v1H9zM12 4h2v1h-2zM9 5h1v2H9zM11 6h2v1h-2zM0 9h2v1H0zM3 8h1v2H3zM5 9h3v1H5zM8 8h1v1H8zM10 8h2v2h-2zM13 9h1v2h-1zM15 8h2v1h-2zM18 8h1v2h-1zM20 9h1v2h-1zM1 11h2v1H1zM4 11h1v2H4zM6 12h2v1H6zM9 11h1v3H9zM11 12h2v2h-2zM14 12h1v1h-1zM16 11h2v1h-2zM19 12h2v1h-2zM8 14h1v2H8zM10 15h2v1h-2zM13 14h2v2h-2zM16 14h1v2h-1zM18 14h3v1h-3zM9 17h2v2H9zM12 17h1v3h-1zM14 17h2v1h-2zM17 17h2v2h-2zM20 16h1v3h-1zM8 19h1v2H8zM10 20h4v1h-4zM15 19h2v2h-2zM19 20h1v1h-1z"/>
             </svg>
-            <small>PARTICIPEZ</small>
+            <small data-i18n="idx.052">PARTICIPEZ</small>
           </div>
         </div>
         <div class="tv-base"></div>
@@ -582,18 +587,18 @@
 <section id="evenements">
   <div class="wrap">
     <div class="section-head">
-      <span class="kicker">Pour chaque grand moment</span>
-      <h2>Un EventLens pour chaque occasion</h2>
-      <p>Des grands jours aux petites victoires, capturez-les tous.</p>
+      <span class="kicker" data-i18n="idx.053">Pour chaque grand moment</span>
+      <h2 data-i18n="idx.054">Un EventLens pour chaque occasion</h2>
+      <p data-i18n="idx.055">Des grands jours aux petites victoires, capturez-les tous.</p>
     </div>
     <div class="event-types">
-      <span class="chip">💍 Mariage</span>
-      <span class="chip">🎂 Anniversaire</span>
-      <span class="chip">🍼 Baby shower</span>
-      <span class="chip">🎓 Remise de diplômes</span>
-      <span class="chip">💐 Fiançailles</span>
-      <span class="chip">🎉 Soirée</span>
-      <span class="chip">🏢 Corporate</span>
+      <span class="chip" data-i18n="idx.056">💍 Mariage</span>
+      <span class="chip" data-i18n="idx.057">🎂 Anniversaire</span>
+      <span class="chip" data-i18n="idx.058">🍼 Baby shower</span>
+      <span class="chip" data-i18n="idx.059">🎓 Remise de diplômes</span>
+      <span class="chip" data-i18n="idx.060">💐 Fiançailles</span>
+      <span class="chip" data-i18n="idx.061">🎉 Soirée</span>
+      <span class="chip" data-i18n="idx.062">🏢 Corporate</span>
     </div>
   </div>
 </section>
@@ -602,54 +607,54 @@
 <section id="tarifs">
   <div class="wrap">
     <div class="section-head">
-      <span class="kicker">Tarifs simples</span>
-      <h2>Un prix par événement, pas de surprise</h2>
-      <p>Commencez gratuitement, passez en Premium pour le grand jour.</p>
+      <span class="kicker" data-i18n="idx.063">Tarifs simples</span>
+      <h2 data-i18n="idx.064">Un prix par événement, pas de surprise</h2>
+      <p data-i18n="idx.065">Commencez gratuitement, passez en Premium pour le grand jour.</p>
     </div>
     <div class="plans">
 
       <div class="plan">
-        <h3>Découverte</h3>
-        <p class="plan-desc">Pour tester EventLens sur une petite fête.</p>
-        <div class="price">Gratuit</div>
+        <h3 data-i18n="idx.066">Découverte</h3>
+        <p class="plan-desc" data-i18n="idx.067">Pour tester EventLens sur une petite fête.</p>
+        <div class="price" data-i18n="idx.068">Gratuit</div>
         <ul>
-          <li>1 événement par mois</li>
-          <li>Jusqu'à 30 invités</li>
-          <li>150 photos</li>
-          <li>Modération IA (filtre NSFW)</li>
-          <li>Galerie live &amp; QR code</li>
-          <li>Rétention 7 jours</li>
+          <li data-i18n="idx.069">1 événement par mois</li>
+          <li data-i18n="idx.070">Jusqu'à 30 invités</li>
+          <li data-i18n="idx.071">150 photos</li>
+          <li data-i18n="idx.072">Modération IA (filtre NSFW)</li>
+          <li data-i18n="idx.073">Galerie live &amp; QR code</li>
+          <li data-i18n="idx.074">Rétention 7 jours</li>
         </ul>
-        <a href="./support.html" class="btn btn-ghost">Commencer gratuitement</a>
+        <a href="./support.html" class="btn btn-ghost" data-i18n="idx.075">Commencer gratuitement</a>
       </div>
 
       <div class="plan plan-featured">
-        <span class="plan-badge">Le plus populaire</span>
-        <h3>Pass Événement Premium</h3>
-        <p class="plan-desc">Tout EventLens, pour un événement inoubliable.</p>
-        <div class="price">39 € <small>/ événement</small></div>
+        <span class="plan-badge" data-i18n="idx.076">Le plus populaire</span>
+        <h3 data-i18n="idx.077">Pass Événement Premium</h3>
+        <p class="plan-desc" data-i18n="idx.078">Tout EventLens, pour un événement inoubliable.</p>
+        <div class="price">39 € <small data-i18n="idx.079">/ événement</small></div>
         <ul>
-          <li>Invités &amp; photos illimités</li>
-          <li>Qualité HD</li>
-          <li>Selfie-Match</li>
-          <li>Photo wall sans filigrane</li>
-          <li>Albums intelligents par IA</li>
-          <li>Rétention 60 jours</li>
+          <li data-i18n="idx.080">Invités &amp; photos illimités</li>
+          <li data-i18n="idx.081">Qualité HD</li>
+          <li data-i18n="idx.032">Selfie-Match</li>
+          <li data-i18n="idx.082">Photo wall sans filigrane</li>
+          <li data-i18n="idx.083">Albums intelligents par IA</li>
+          <li data-i18n="idx.084">Rétention 60 jours</li>
         </ul>
-        <a href="./support.html" class="btn btn-primary">Créer mon événement</a>
+        <a href="./support.html" class="btn btn-primary" data-i18n="idx.006">Créer mon événement</a>
       </div>
 
       <div class="plan">
-        <h3>Pro &amp; Agences</h3>
-        <p class="plan-desc">Pour les organisateurs, lieux et wedding planners.</p>
-        <div class="price">dès 49 € <small>/ mois</small></div>
+        <h3 data-i18n="idx.085">Pro &amp; Agences</h3>
+        <p class="plan-desc" data-i18n="idx.086">Pour les organisateurs, lieux et wedding planners.</p>
+        <div class="price" data-i18n-html="idx.proprice">dès 49 € <small>/ mois</small></div>
         <ul>
-          <li>Votre logo sur l'espace invité</li>
-          <li>Plusieurs événements en parallèle</li>
-          <li>Archives jusqu'à 365 jours</li>
-          <li>Support prioritaire</li>
+          <li data-i18n="idx.087">Votre logo sur l'espace invité</li>
+          <li data-i18n="idx.088">Plusieurs événements en parallèle</li>
+          <li data-i18n="idx.089">Archives jusqu'à 365 jours</li>
+          <li data-i18n="idx.090">Support prioritaire</li>
         </ul>
-        <a href="./pro.html" class="btn btn-ghost">Voir les offres pro</a>
+        <a href="./pro.html" class="btn btn-ghost" data-i18n="idx.091">Voir les offres pro</a>
       </div>
 
     </div>
@@ -659,17 +664,17 @@
 <!-- ============ MULTILINGUE ============ -->
 <section id="langues">
   <div class="wrap section-head" style="margin-bottom:0">
-    <span class="kicker">Pour tous vos invités</span>
-    <h2>Disponible en 7 langues</h2>
-    <p>Vos invités participent dans leur langue, où qu'ils viennent.</p>
+    <span class="kicker" data-i18n="idx.092">Pour tous vos invités</span>
+    <h2 data-i18n="idx.093">Disponible en 7 langues</h2>
+    <p data-i18n="idx.094">Vos invités participent dans leur langue, où qu'ils viennent.</p>
     <div class="langs">
-      <span class="lang">🇫🇷 FR</span>
-      <span class="lang">🇬🇧 EN</span>
-      <span class="lang">🇳🇱 NL</span>
-      <span class="lang">🇸🇦 AR</span>
-      <span class="lang">🇵🇭 TL</span>
-      <span class="lang">🇪🇸 ES</span>
-      <span class="lang">🇮🇳 HI</span>
+      <span class="lang" data-i18n="idx.095">🇫🇷 FR</span>
+      <span class="lang" data-i18n="idx.096">🇬🇧 EN</span>
+      <span class="lang" data-i18n="idx.097">🇳🇱 NL</span>
+      <span class="lang" data-i18n="idx.098">🇸🇦 AR</span>
+      <span class="lang" data-i18n="idx.099">🇵🇭 TL</span>
+      <span class="lang" data-i18n="idx.100">🇪🇸 ES</span>
+      <span class="lang" data-i18n="idx.101">🇮🇳 HI</span>
     </div>
   </div>
 </section>
@@ -678,29 +683,29 @@
 <section id="faq">
   <div class="wrap">
     <div class="section-head">
-      <span class="kicker">On répond à tout</span>
-      <h2>Questions fréquentes</h2>
+      <span class="kicker" data-i18n="idx.102">On répond à tout</span>
+      <h2 data-i18n="idx.103">Questions fréquentes</h2>
     </div>
     <div class="faq">
       <details>
-        <summary>Les invités doivent-ils installer une application ?</summary>
-        <p>Non. EventLens fonctionne entièrement dans le navigateur : les invités scannent le QR code de l'événement et envoient leurs photos immédiatement, sans installation ni création de compte.</p>
+        <summary data-i18n="idx.104">Les invités doivent-ils installer une application ?</summary>
+        <p data-i18n="idx.105">Non. EventLens fonctionne entièrement dans le navigateur : les invités scannent le QR code de l'événement et envoient leurs photos immédiatement, sans installation ni création de compte.</p>
       </details>
       <details>
-        <summary>Les photos sont-elles modérées ?</summary>
-        <p>Oui. Chaque photo et vidéo passe par notre modération IA automatique — filtre NSFW inclus dès l'offre gratuite — avant d'apparaître dans la galerie et sur le mur photo. Vous gardez la main pour retirer un contenu à tout moment.</p>
+        <summary data-i18n="idx.106">Les photos sont-elles modérées ?</summary>
+        <p data-i18n="idx.107">Oui. Chaque photo et vidéo passe par notre modération IA automatique — filtre NSFW inclus dès l'offre gratuite — avant d'apparaître dans la galerie et sur le mur photo. Vous gardez la main pour retirer un contenu à tout moment.</p>
       </details>
       <details>
-        <summary>Combien de temps les photos sont-elles conservées ?</summary>
-        <p>7 jours avec l'offre Découverte et 60 jours avec le Pass Événement Premium. À l'échéance, tout est purgé automatiquement, conformément au RGPD. Vous pouvez bien sûr tout télécharger avant.</p>
+        <summary data-i18n="idx.108">Combien de temps les photos sont-elles conservées ?</summary>
+        <p data-i18n="idx.109">7 jours avec l'offre Découverte et 60 jours avec le Pass Événement Premium. À l'échéance, tout est purgé automatiquement, conformément au RGPD. Vous pouvez bien sûr tout télécharger avant.</p>
       </details>
       <details>
-        <summary>Le Selfie-Match est-il respectueux de la vie privée ?</summary>
-        <p>Oui. Le Selfie-Match est strictement opt-in : chaque invité choisit lui-même de l'activer. Les données biométriques servent uniquement à retrouver ses propres photos et sont purgées automatiquement à la fin de la rétention.</p>
+        <summary data-i18n="idx.110">Le Selfie-Match est-il respectueux de la vie privée ?</summary>
+        <p data-i18n="idx.111">Oui. Le Selfie-Match est strictement opt-in : chaque invité choisit lui-même de l'activer. Les données biométriques servent uniquement à retrouver ses propres photos et sont purgées automatiquement à la fin de la rétention.</p>
       </details>
       <details>
-        <summary>Puis-je projeter les photos pendant la fête ?</summary>
-        <p>Absolument. Le photo wall affiche la galerie en diaporama live sur n'importe quel écran ou vidéoprojecteur, avec le QR code de participation intégré pour inciter tout le monde à contribuer en direct.</p>
+        <summary data-i18n="idx.112">Puis-je projeter les photos pendant la fête ?</summary>
+        <p data-i18n="idx.113">Absolument. Le photo wall affiche la galerie en diaporama live sur n'importe quel écran ou vidéoprojecteur, avec le QR code de participation intégré pour inciter tout le monde à contribuer en direct.</p>
       </details>
     </div>
   </div>
@@ -710,9 +715,9 @@
 <section>
   <div class="wrap">
     <div class="final-cta">
-      <h2>Prêt à capturer <span class="grad-text">chaque instant</span> ?</h2>
-      <p>Créez votre événement en deux minutes. Vos invités s'occupent du reste.</p>
-      <a href="#tarifs" class="btn btn-primary">Créer mon événement 🎉</a>
+      <h2 data-i18n-html="idx.cta2">Prêt à capturer <span class="grad-text">chaque instant</span> ?</h2>
+      <p data-i18n="idx.114">Créez votre événement en deux minutes. Vos invités s'occupent du reste.</p>
+      <a href="#tarifs" class="btn btn-primary" data-i18n="idx.008">Créer mon événement 🎉</a>
     </div>
   </div>
 </section>
@@ -722,21 +727,24 @@
   <div class="wrap foot">
     <div class="logo" style="font-size:1.05rem"><img src="./logo.png" alt="" class="logo-mark" width="28" height="28" style="width:28px;height:28px">EventLens</div>
     <nav class="foot-links" aria-label="Liens de pied de page">
-      <a href="#comment">Comment ça marche</a>
-      <a href="#fonctionnalites">Fonctionnalités</a>
-      <a href="#tarifs">Tarifs</a>
-      <a href="#faq">FAQ</a>
-      <a href="./join.html">Rejoindre un événement</a>
-      <a href="./privacy.html">Confidentialité</a>
-      <a href="./terms.html">Conditions d'utilisation</a>
-      <a href="./support.html">Assistance</a>
+      <a href="#comment" data-i18n="idx.001">Comment ça marche</a>
+      <a href="#fonctionnalites" data-i18n="idx.002">Fonctionnalités</a>
+      <a href="#tarifs" data-i18n="idx.004">Tarifs</a>
+      <a href="#faq" data-i18n="idx.005">FAQ</a>
+      <a href="./join.html" data-i18n="idx.009">Rejoindre un événement</a>
+      <a href="./privacy.html" data-i18n="idx.115">Confidentialité</a>
+      <a href="./terms.html" data-i18n="idx.116">Conditions d'utilisation</a>
+      <a href="./support.html" data-i18n="idx.117">Assistance</a>
     </nav>
     <div>
-      <a href="mailto:wagaddapps@gmail.com">wagaddapps@gmail.com</a>
-      <span style="margin-left:16px">© 2026 EventLens</span>
+      <a href="mailto:wagaddapps@gmail.com" data-i18n="idx.118">wagaddapps@gmail.com</a>
+      <span style="margin-left:16px" data-i18n="idx.119">© 2026 EventLens</span>
     </div>
   </div>
 </footer>
+<div data-i18n-switcher class="langbar wrap" aria-label="Langue"></div>
+<script src="./i18n.js"></script>
+<script src="./i18n-index.js"></script>
 
 </body>
 </html>
