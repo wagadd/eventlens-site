@@ -38,121 +38,69 @@
   .tabs button.on{background:var(--grad);border-color:transparent;color:#fff}
   [hidden]{display:none!important}
   footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--border);font-size:.9rem;color:var(--muted)}
+  .langbar{display:flex;gap:5px;flex-wrap:wrap;margin:14px 0 22px}
+  .langbar button{all:unset;cursor:pointer;font-size:18px;line-height:1;padding:6px 8px;
+    border-radius:10px;border:1px solid var(--border)}
+  .langbar button[aria-pressed="true"]{border-color:var(--rose);background:rgba(255,255,255,.06)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <a href="index.html" class="brand">EventLens</a>
+  <a href="index.html" class="brand"><img src="./logo.png" alt="" style="width:24px;height:24px;border-radius:8px;object-fit:cover;vertical-align:-5px;margin-right:7px">EventLens</a>
 
-  <div class="tabs">
-    <button id="btn-fr" class="on" onclick="pick('fr')">Français</button>
-    <button id="btn-en" onclick="pick('en')">English</button>
-  </div>
+  <!-- Une seule section, sept dictionnaires. Les deux sections dupliquées
+       fr/en et leur bascule maison ont disparu : à sept langues elles auraient
+       demandé sept copies de la même prose, et la langue choisie ne suivait pas
+       d'une page à l'autre. -->
+  <div data-i18n-switcher class="langbar" aria-label="Langue"></div>
 
-  <!-- ================= FRANÇAIS ================= -->
-  <section id="fr">
-    <h1>Assistance</h1>
-
+  <section>
+    <h1 data-i18n="sup.h1">Assistance</h1>
     <div class="card">
-      <h3 style="margin-top:0">Nous écrire</h3>
-      <p style="margin-bottom:0">
-        <a href="mailto:wagaddapps@gmail.com">wagaddapps@gmail.com</a><br>
+      <h3 style="margin-top:0" data-i18n="sup.write">Nous écrire</h3>
+      <p style="margin-bottom:0" data-i18n-html="sup.contact">
+        <a href="mailto:wagaddapps@gmail.com">wagaddapps@gmail.com</a><br />
         Réponse sous 48 h ouvrées. Signalements de contenu : sous 24 h.
       </p>
     </div>
 
-    <h2>Signaler une photo</h2>
-    <p>
+    <h2 data-i18n="sup.reportH">Signaler une photo</h2>
+    <p data-i18n-html="sup.report1">
       Dans l'application, ouvrez la photo en plein écran et touchez l'icône <strong>drapeau</strong> en
       haut à droite. La photo est masquée immédiatement et l'organisateur en est informé. Vous pouvez
       aussi bloquer la personne qui l'a envoyée depuis le même menu.
     </p>
-    <p>
+    <p data-i18n="sup.report2">
       Si la photo vous représente et que vous n'êtes pas invité de l'événement, écrivez-nous avec le
       code de l'événement : nous la retirons.
     </p>
 
-    <h2>Supprimer mon compte</h2>
-    <p>
+    <h2 data-i18n="sup.delH">Supprimer mon compte</h2>
+    <p data-i18n-html="sup.del1">
       Application → <strong>Compte</strong> → <strong>Supprimer mon compte</strong>. Cela efface
       définitivement votre compte, les événements que vous organisez avec toutes leurs photos, vos
       envois et votre empreinte faciale. Aucune démarche par e-mail n'est nécessaire.
     </p>
 
-    <h2>Questions fréquentes</h2>
-    <h3>Faut-il installer l'application pour envoyer des photos ?</h3>
-    <p>Non. Le QR code de l'événement ouvre une page web d'envoi, sans installation ni compte.</p>
-    <h3>Qui voit mes photos ?</h3>
-    <p>Uniquement les autres invités du même événement, après approbation. Jamais le grand public.</p>
-    <h3>Combien de temps les photos sont-elles conservées ?</h3>
-    <p>7 jours après la clôture en offre gratuite, 60 jours en Premium.</p>
-    <h3>Puis-je utiliser l'application sans reconnaissance faciale ?</h3>
-    <p>Oui. Le Selfie-Match est facultatif et demande un consentement explicite.</p>
+    <h2 data-i18n="sup.faqH">Questions fréquentes</h2>
+    <h3 data-i18n="sup.q1">Faut-il installer l'application pour envoyer des photos ?</h3>
+    <p data-i18n="sup.a1">Non. Le QR code de l'événement ouvre une page web d'envoi, sans installation ni compte.</p>
+    <h3 data-i18n="sup.q2">Qui voit mes photos ?</h3>
+    <p data-i18n="sup.a2">Uniquement les autres invités du même événement, après approbation. Jamais le grand public.</p>
+    <h3 data-i18n="sup.q3">Combien de temps les photos sont-elles conservées ?</h3>
+    <p data-i18n="sup.a3">7 jours après la clôture en offre gratuite, 60 jours en Premium.</p>
+    <h3 data-i18n="sup.q4">Puis-je utiliser l'application sans reconnaissance faciale ?</h3>
+    <p data-i18n="sup.a4">Oui. Le Selfie-Match est facultatif et demande un consentement explicite.</p>
 
     <footer>
       <a href="index.html">EventLens</a> ·
-      <a href="privacy.html">Politique de confidentialité</a> ·
-      <a href="terms.html">Conditions d'utilisation</a>
-    </footer>
-  </section>
-
-  <!-- ================= ENGLISH ================= -->
-  <section id="en" hidden>
-    <h1>Support</h1>
-
-    <div class="card">
-      <h3 style="margin-top:0">Contact us</h3>
-      <p style="margin-bottom:0">
-        <a href="mailto:wagaddapps@gmail.com">wagaddapps@gmail.com</a><br>
-        Reply within 48 business hours. Content reports: within 24 hours.
-      </p>
-    </div>
-
-    <h2>Report a photo</h2>
-    <p>
-      In the app, open the photo full screen and tap the <strong>flag</strong> icon at the top right.
-      The photo is hidden immediately and the organizer is notified. You can also block the person who
-      uploaded it from the same menu.
-    </p>
-    <p>
-      If the photo shows you and you are not a guest of that event, write to us with the event code and
-      we will take it down.
-    </p>
-
-    <h2>Delete my account</h2>
-    <p>
-      App → <strong>Account</strong> → <strong>Delete my account</strong>. This permanently erases your
-      account, the events you organize along with all their photos, your uploads and your face
-      template. No email request is needed.
-    </p>
-
-    <h2>Frequently asked</h2>
-    <h3>Do I need to install the app to send photos?</h3>
-    <p>No. The event QR code opens a web upload page — no install, no account.</p>
-    <h3>Who can see my photos?</h3>
-    <p>Only the other guests of the same event, once approved. Never the general public.</p>
-    <h3>How long are photos kept?</h3>
-    <p>7 days after the event closes on the free tier, 60 days on Premium.</p>
-    <h3>Can I use the app without face recognition?</h3>
-    <p>Yes. Selfie-Match is optional and requires explicit consent.</p>
-
-    <footer>
-      <a href="index.html">EventLens</a> ·
-      <a href="privacy.html">Privacy Policy</a> ·
-      <a href="terms.html">Terms of Use</a>
+      <a href="privacy.html" data-i18n="sup.privacy">Politique de confidentialité</a> ·
+      <a href="terms.html" data-i18n="sup.terms">Conditions d'utilisation</a>
     </footer>
   </section>
 </div>
 
-<script>
-  function pick(l){
-    document.getElementById('fr').hidden = l !== 'fr';
-    document.getElementById('en').hidden = l !== 'en';
-    document.getElementById('btn-fr').classList.toggle('on', l === 'fr');
-    document.getElementById('btn-en').classList.toggle('on', l === 'en');
-    document.documentElement.lang = l;
-  }
-  if ((navigator.language || 'fr').slice(0,2) !== 'fr') pick('en');
-</script>
+<script src="./i18n.js"></script>
+<script src="./i18n-support.js"></script>
 </body>
 </html>
