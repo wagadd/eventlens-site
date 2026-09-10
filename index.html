@@ -351,7 +351,9 @@
   .foot-links{display:flex;flex-wrap:wrap;gap:20px}
   .foot-links a:hover{color:var(--text)}
   .foot a[href^="mailto"]{color:var(--rose);font-weight:600}
-  .langbar{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;padding:10px 0 4px}
+  .langbar{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
+  header .langbar{margin-right:8px}
+  .mobile-menu .langbar{margin-top:14px;justify-content:flex-start}
   .langbar button{all:unset;cursor:pointer;font-size:18px;line-height:1;padding:6px 8px;
     border-radius:10px;border:1px solid var(--border)}
   .langbar button[aria-pressed="true"]{border-color:var(--border-strong);background:rgba(255,255,255,.08)}
@@ -371,6 +373,7 @@
       <a href="#tarifs" data-i18n="idx.004">Tarifs</a>
       <a href="#faq" data-i18n="idx.005">FAQ</a>
     </nav>
+    <div data-i18n-switcher class="langbar" aria-label="Langue"></div>
     <a href="#tarifs" class="btn btn-primary btn-sm nav-cta" data-i18n="idx.006">Créer mon événement</a>
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu">
       <span></span><span></span><span></span>
@@ -383,6 +386,7 @@
     <a href="#tarifs" data-i18n="idx.004">Tarifs</a>
     <a href="#faq" data-i18n="idx.005">FAQ</a>
     <a href="#tarifs" class="btn btn-primary btn-sm" data-i18n="idx.006">Créer mon événement</a>
+    <div data-i18n-switcher class="langbar" aria-label="Langue"></div>
   </nav>
 </header>
 <script>
@@ -742,7 +746,6 @@
     </div>
   </div>
 </footer>
-<div data-i18n-switcher class="langbar wrap" aria-label="Langue"></div>
 <script src="./i18n.js"></script>
 <script src="./i18n-index.js"></script>
 

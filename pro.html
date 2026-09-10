@@ -68,6 +68,9 @@
   .who{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
   footer{border-top:1px solid var(--border);padding:28px 0;color:var(--muted);font-size:.86rem}
   footer a{text-decoration:underline}
+  .langbar{display:flex;gap:5px;flex-wrap:wrap;padding:14px 0 0}
+  .langbar button{all:unset;cursor:pointer;font-size:18px;line-height:1;padding:6px 8px;border-radius:10px;border:1px solid var(--border)}
+  .langbar button[aria-pressed="true"]{border-color:var(--border-strong);background:rgba(255,255,255,.08)}
   .note{color:var(--muted);font-size:.85rem;margin-top:22px;max-width:70ch}
   @media (max-width:380px){
     .wrap{padding:0 14px}
@@ -81,79 +84,82 @@
 <body>
 
 <header><div class="wrap"><a href="./" class="brand"><img src="./logo.png" alt="" class="dot" width="26" height="26">EventLens</a></div></header>
+<div data-i18n-switcher class="langbar wrap" aria-label="Langue"></div>
 
 <section class="wrap">
-  <span class="kicker">Pour les professionnels</span>
-  <h1>Votre marque, <span class="grad-text">sur chaque événement</span></h1>
-  <p class="lede">Pour les wedding planners, DJ, lieux de réception et agences événementielles.
+  <span class="kicker" data-i18n="pro.kicker">Pour les professionnels</span>
+  <h1 data-i18n-html="pro.h1">Votre marque, <span class="grad-text">sur chaque événement</span></h1>
+  <p class="lede" data-i18n="pro.lede">Pour les wedding planners, DJ, lieux de réception et agences événementielles.
      Les offres professionnelles s'achètent ici, pas dans l'application.</p>
 
   <div class="cycle" role="group" aria-label="Périodicité">
-    <button id="cyc-m" aria-pressed="true">Mensuel</button>
-    <button id="cyc-y" aria-pressed="false">Annuel <span class="save">−17 %</span></button>
+    <button id="cyc-m" aria-pressed="true" data-i18n="pro.monthly">Mensuel</button>
+    <button id="cyc-y" aria-pressed="false" data-i18n-html="pro.yearly">Annuel <span class="save">−17 %</span></button>
   </div>
 
   <div class="cards">
     <div class="card hot">
-      <span class="tag">Le plus courant</span>
-      <h2>Indépendant</h2>
-      <p class="sub">Wedding planners, DJ, petits organisateurs.</p>
+      <span class="tag" data-i18n="pro.popular">Le plus courant</span>
+      <h2 data-i18n="pro.indepName">Indépendant</h2>
+      <p class="sub" data-i18n="pro.indepSub">Wedding planners, DJ, petits organisateurs.</p>
       <div class="price" id="price-indep">49 €<small> / mois</small></div>
       <ul>
-        <li>Votre logo sur l'espace invité</li>
-        <li>3 événements ouverts en même temps</li>
-        <li>Archives conservées 180 jours</li>
-        <li>Invités et photos illimités</li>
-        <li>Support par e-mail sous 48 h</li>
+        <li data-i18n="pro.f.logo">Votre logo sur l'espace invité</li>
+        <li data-i18n="pro.f.three">3 événements ouverts en même temps</li>
+        <li data-i18n="pro.f.180">Archives conservées 180 jours</li>
+        <li data-i18n="pro.f.unlimited">Invités et photos illimités</li>
+        <li data-i18n="pro.f.mail">Support par e-mail sous 48 h</li>
       </ul>
-      <button class="btn" data-plan="independant">Souscrire</button>
+      <button class="btn" data-plan="independant" data-i18n="pro.subscribe">Souscrire</button>
     </div>
 
     <div class="card">
-      <h2>Agence</h2>
-      <p class="sub">Agences événementielles et grands groupes.</p>
+      <h2 data-i18n="pro.agName">Agence</h2>
+      <p class="sub" data-i18n="pro.agSub">Agences événementielles et grands groupes.</p>
       <div class="price">149 €<small> / mois</small></div>
       <ul>
-        <li>Événements ouverts illimités</li>
-        <li>Archives conservées 365 jours</li>
+        <li data-i18n="pro.f.evUnlimited">Événements ouverts illimités</li>
+        <li data-i18n="pro.f.365">Archives conservées 365 jours</li>
         <li>Votre logo sur l'espace invité</li>
-        <li>Support prioritaire</li>
-        <li class="no">Couleurs et domaine personnalisés — en préparation</li>
+        <li data-i18n="pro.f.priority">Support prioritaire</li>
+        <li class="no" data-i18n="pro.f.soon">Couleurs et domaine personnalisés — en préparation</li>
       </ul>
-      <button class="btn ghost" data-plan="agence">Souscrire</button>
+      <button class="btn ghost" data-plan="agence" data-i18n="pro.subscribe">Souscrire</button>
     </div>
   </div>
 
   <div class="panel" id="panel">
     <div id="signed-out">
-      <h3>Connectez-vous d'abord</h3>
-      <p>Utilisez le compte que vous avez créé dans l'application EventLens.
+      <h3 data-i18n="pro.signinH">Connectez-vous d'abord</h3>
+      <p data-i18n="pro.signinSub">Utilisez le compte que vous avez créé dans l'application EventLens.
          C'est lui qui recevra l'abonnement.</p>
-      <label for="email">Adresse e-mail</label>
-      <input id="email" type="email" autocomplete="email" placeholder="vous@exemple.com">
-      <label for="pw">Mot de passe</label>
+      <label for="email" data-i18n="pro.email">Adresse e-mail</label>
+      <input id="email" type="email" autocomplete="email" placeholder="vous@exemple.com" data-i18n-ph="pro.emailPh">
+      <label for="pw" data-i18n="pro.pw">Mot de passe</label>
       <input id="pw" type="password" autocomplete="current-password" placeholder="••••••••">
-      <button class="btn" id="signin" style="margin-top:4px">Se connecter</button>
+      <button class="btn" id="signin" style="margin-top:4px" data-i18n="pro.signin">Se connecter</button>
     </div>
     <div id="signed-in" hidden>
       <div class="who">
-        <div><h3 style="margin:0">Connecté</h3><p id="who-email" style="margin:0"></p></div>
-        <button class="btn ghost" id="signout" style="margin:0;padding:9px 16px">Changer de compte</button>
+        <div><h3 style="margin:0" data-i18n="pro.signedIn">Connecté</h3><p id="who-email" style="margin:0"></p></div>
+        <button class="btn ghost" id="signout" style="margin:0;padding:9px 16px" data-i18n="pro.switch">Changer de compte</button>
       </div>
     </div>
     <p class="msg" id="msg"></p>
   </div>
 
-  <p class="note">Les paiements sont traités par Paddle, qui agit comme vendeur et émet la facture
+  <p class="note" data-i18n="pro.paddleNote">Les paiements sont traités par Paddle, qui agit comme vendeur et émet la facture
      avec la TVA applicable. Un abonnement qui expire ne retire jamais la marque d'un événement
      déjà lancé : les droits acquis le restent jusqu'à sa clôture.</p>
 </section>
 
 <footer class="wrap">
-  <a href="./">Accueil</a> · <a href="./terms.html">Conditions</a> ·
-  <a href="./privacy.html">Confidentialité</a> · <a href="./support.html">Support</a>
+  <a href="./" data-i18n="pro.home">Accueil</a> · <a href="./terms.html" data-i18n="pro.terms">Conditions</a> ·
+  <a href="./privacy.html" data-i18n="pro.privacy">Confidentialité</a> · <a href="./support.html" data-i18n="pro.support">Support</a>
 </footer>
 
+<script src="./i18n.js"></script>
+<script src="./i18n-pro.js"></script>
 <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
 <script>
@@ -171,6 +177,7 @@
   };
 
   var msg = document.getElementById('msg');
+  var T = function (k) { return window.ELI18N.t(k); };
   var cycle = 'month';
   var user = null;
 
@@ -183,7 +190,7 @@
 
   var paddleReady = false;
   if (PADDLE_CLIENT_TOKEN.indexOf('REMPLACER') === 0) {
-    say('Paiement pas encore configuré sur cette page.', 'err');
+    say(T('pro.msgNotReady'), 'err');
   } else {
     Paddle.Initialize({ token: PADDLE_CLIENT_TOKEN });
     paddleReady = true;
@@ -205,11 +212,11 @@
   document.getElementById('signin').addEventListener('click', function () {
     var email = document.getElementById('email').value.trim();
     var pw = document.getElementById('pw').value;
-    if (!email || !pw) { say('Renseignez votre e-mail et votre mot de passe.', 'err'); return; }
-    say('Connexion…');
+    if (!email || !pw) { say(T('pro.msgFill'), 'err'); return; }
+    say(T('pro.msgConnecting'));
     sb.auth.signInWithPassword({ email: email, password: pw }).then(function (r) {
-      if (r.error) { say('Connexion impossible : ' + r.error.message, 'err'); return; }
-      user = r.data.user; renderUser(); say('Connecté. Choisissez votre offre.', 'ok');
+      if (r.error) { say(T('pro.msgFail') + r.error.message, 'err'); return; }
+      user = r.data.user; renderUser(); say(T('pro.msgOk'), 'ok');
     });
   });
 
@@ -224,18 +231,21 @@
     cycle = c;
     document.getElementById('cyc-m').setAttribute('aria-pressed', String(c === 'month'));
     document.getElementById('cyc-y').setAttribute('aria-pressed', String(c === 'year'));
-    document.getElementById('price-indep').innerHTML =
-      c === 'year' ? '490 €<small> / an</small>' : '49 €<small> / mois</small>';
+    document.getElementById('price-indep').innerHTML = T(c === 'year' ? 'pro.priceY' : 'pro.priceM');
   }
+
+  // Le prix est rendu par le script, pas par une clé data-i18n : il faut donc
+  // le réafficher quand la langue change.
+  window.ELI18N.onChange(function () { setCycle(cycle); });
 
   Array.prototype.forEach.call(document.querySelectorAll('[data-plan]'), function (btn) {
     btn.addEventListener('click', function () {
       var plan = btn.getAttribute('data-plan');
       var priceId = PRICES[plan][cycle] || PRICES[plan].month;
 
-      if (!paddleReady) { say('Paiement pas encore configuré sur cette page.', 'err'); return; }
+      if (!paddleReady) { say(T('pro.msgNotReady'), 'err'); return; }
       if (!user) {
-        say('Connectez-vous d'"'"'abord : l'"'"'abonnement doit être rattaché à votre compte.', 'err');
+        say(T('pro.msgNeedLogin'), 'err');
         document.getElementById('panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }

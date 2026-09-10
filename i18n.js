@@ -152,6 +152,7 @@
 
   var mounted = false;
   var current = 'fr';
+  var onChange = [];
 
   function pick() {
     try {
@@ -185,6 +186,7 @@
     Array.prototype.forEach.call(document.querySelectorAll('[data-i18n-switcher] [data-lang]'), function (b) {
       b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang));
     });
+    onChange.forEach(function (cb) { try { cb(lang); } catch (e) {} });
   }
 
   function mount() {
@@ -207,7 +209,21 @@
     apply(pick());
   }
 
-  window.ELI18N = { register: register, apply: function () { apply(pick()); }, langs: LANGS };
+  // Accès depuis le JavaScript d'une page, pour les messages qui n'existent pas
+  // dans le HTML (erreurs de connexion, états transitoires).
+  function t(key) {
+    var d = T[current] || T.fr;
+    return d[key] || (T.fr && T.fr[key]) || key;
+  }
+
+  window.ELI18N = {
+    register: register,
+    apply: function () { apply(pick()); },
+    onChange: function (cb) { onChange.push(cb); },
+    t: t,
+    lang: function () { return current; },
+    langs: LANGS
+  };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
   else mount();
