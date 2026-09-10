@@ -34,7 +34,7 @@
     font-weight:700;font-size:.9rem;color:var(--muted)}
   .cycle button[aria-pressed="true"]{background:var(--grad);color:#fff}
   .save{font-size:.78rem;color:var(--orange);font-weight:700}
-  .cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  .cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
   .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:26px;
     display:flex;flex-direction:column}
   .card.hot{border-color:var(--border-strong);box-shadow:0 0 0 1px rgba(109,93,246,.35),0 18px 50px -22px rgba(109,93,246,.5)}
@@ -68,6 +68,13 @@
   footer{border-top:1px solid var(--border);padding:28px 0;color:var(--muted);font-size:.86rem}
   footer a{text-decoration:underline}
   .note{color:var(--muted);font-size:.85rem;margin-top:22px;max-width:70ch}
+  @media (max-width:380px){
+    .wrap{padding:0 14px}
+    section{padding:40px 0}
+    .card{padding:20px}
+    .cycle button{padding:8px 13px;font-size:.85rem}
+    .price{font-size:1.75rem}
+  }
 </style>
 </head>
 <body>
