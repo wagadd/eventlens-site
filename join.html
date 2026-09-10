@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<link rel="icon" href="./favicon.png">
 <meta name="theme-color" content="#0F1220" />
 <title>EventLens — Rejoindre un événement</title>
 <style>
@@ -179,37 +180,43 @@
     margin-right: 6px;
   }
   @keyframes sp { to { transform: rotate(360deg); } }
+  .langbar{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;
+    padding:18px 14px 26px;max-width:420px;margin:0 auto}
+  .langbar button{all:unset;cursor:pointer;font-size:19px;line-height:1;
+    padding:7px 9px;border-radius:11px;border:1px solid rgba(255,255,255,.12)}
+  .langbar button[aria-pressed="true"]{border-color:rgba(255,255,255,.5);
+    background:rgba(255,255,255,.10)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="logo">EventLens</div>
-    <div class="tagline">Partagez l&rsquo;instant, en direct.</div>
+    <div class="logo"><img src="./logo.png" alt="" style="width:26px;height:26px;border-radius:9px;object-fit:cover;vertical-align:-6px;margin-right:8px">EventLens</div>
+    <div class="tagline" data-i18n="tagline">Partagez l&rsquo;instant, en direct.</div>
   </header>
 
   <!-- Étape 1 : rejoindre -->
   <section class="card" id="joinCard">
-    <h2>Rejoindre l&rsquo;événement</h2>
-    <label for="code">Code de l&rsquo;événement (6 caractères)</label>
+    <h2 data-i18n="join.title">Rejoindre l&rsquo;événement</h2>
+    <label for="code" data-i18n="join.code">Code de l&rsquo;événement (6 caractères)</label>
     <input type="text" id="code" maxlength="6" autocomplete="off" autocapitalize="characters"
            spellcheck="false" inputmode="text" placeholder="ABC123" />
-    <label for="pseudo">Votre pseudo (facultatif)</label>
-    <input type="text" id="pseudo" maxlength="40" autocomplete="nickname" placeholder="Ex. Tante Leïla" />
-    <button class="btn" id="joinBtn">Rejoindre</button>
+    <label for="pseudo" data-i18n="join.pseudo">Votre pseudo (facultatif)</label>
+    <input type="text" id="pseudo" maxlength="40" autocomplete="nickname" placeholder="Ex. Tante Leïla" data-i18n-ph="join.pseudoPh" />
+    <button class="btn" id="joinBtn" data-i18n="join.cta">Rejoindre</button>
     <div class="msg" id="joinMsg"></div>
   </section>
 
   <!-- Étape 2 : envoyer -->
   <section class="card hidden" id="uploadCard">
     <div class="event-name" id="eventName"></div>
-    <div class="event-sub">Vous participez à cet événement 🎉</div>
+    <div class="event-sub" data-i18n="join.in">Vous participez à cet événement 🎉</div>
     <div class="room-badge hidden" id="roomBadge"></div>
     <div class="msg" id="eventMsg"></div>
 
     <!-- Choix de la salle (galeries séparées) -->
     <div id="roomChoice" class="hidden">
-      <h2>Choisissez votre salle</h2>
+      <h2 data-i18n="join.room">Choisissez votre salle</h2>
       <div id="roomButtons"></div>
       <div class="msg" id="roomMsg"></div>
     </div>
@@ -217,13 +224,13 @@
     <div id="uploadZone">
       <div class="drop" id="drop">
         <div class="big">📸</div>
-        <p><strong>Touchez ici</strong> pour choisir vos photos et vidéos<br />ou déposez-les dans cette zone</p>
-        <small>Photos illimitées en taille (recompressées) &middot; vidéos : 30 s et 60 Mo max</small>
+        <p><strong data-i18n="join.tapHere">Touchez ici</strong> <span data-i18n="join.tapRest">pour choisir vos photos et vidéos</span><br /><span data-i18n="join.drop">ou déposez-les dans cette zone</span></p>
+        <small data-i18n="join.limits">Photos illimitées en taille (recompressées) &middot; vidéos : 30 s et 60 Mo max</small>
       </div>
       <input type="file" id="fileInput" accept="image/*,video/*" multiple />
 
-      <label for="caption">Légende (facultative, appliquée à la première photo)</label>
-      <input type="text" id="caption" maxlength="200" placeholder="Un petit mot avec vos photos…" />
+      <label for="caption" data-i18n="join.caption">Légende (facultative, appliquée à la première photo)</label>
+      <input type="text" id="caption" maxlength="200" placeholder="Un petit mot avec vos photos…" data-i18n-ph="join.captionPh" />
 
       <div class="counter" id="counter"></div>
       <div id="progress"></div>
@@ -231,7 +238,7 @@
     </div>
   </section>
 
-  <footer><a href="./index.html">&larr; En savoir plus sur EventLens</a></footer>
+  <footer><a href="./index.html" data-i18n="join.more">&larr; En savoir plus sur EventLens</a></footer>
 </div>
 
 <script type="module">
@@ -602,5 +609,7 @@
     drop.style.opacity = '';
   }
 </script>
+  <div data-i18n-switcher class="langbar" aria-label="Langue"></div>
+  <script src="./i18n.js"></script>
 </body>
 </html>

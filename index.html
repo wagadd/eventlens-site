@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EventLens — Partagez l'instant, en direct.</title>
+<link rel="icon" href="./favicon.png">
 <meta name="description" content="EventLens collecte toutes les photos de votre événement en temps réel. Les invités rejoignent par QR code, sans app ni compte. Galerie live, mur photo, modération IA.">
 <style>
   :root{
@@ -72,9 +73,11 @@
   }
   .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
   .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.2rem;letter-spacing:-.02em}
+  /* Porte l'icône réelle de l'app (web/logo.png) et non plus un emoji, pour que
+     le site et l'App Store montrent la même marque. Pas de fond en dégradé :
+     l'icône a le sien, il apparaîtrait derrière. */
   .logo-mark{
-    width:34px;height:34px;border-radius:10px;background:var(--grad);
-    display:flex;align-items:center;justify-content:center;font-size:1.05rem;
+    width:34px;height:34px;border-radius:10px;object-fit:cover;flex-shrink:0;
     box-shadow:0 4px 14px rgba(109,93,246,.45);
   }
   .nav-links{display:none;gap:28px;font-size:.95rem;color:var(--muted)}
@@ -355,7 +358,7 @@
 <!-- ============ HEADER ============ -->
 <header>
   <div class="wrap nav">
-    <a href="./" class="logo"><span class="logo-mark">📸</span>EventLens</a>
+    <a href="./" class="logo"><img src="./logo.png" alt="" class="logo-mark" width="34" height="34">EventLens</a>
     <nav class="nav-links" aria-label="Navigation principale">
       <a href="#comment">Comment ça marche</a>
       <a href="#fonctionnalites">Fonctionnalités</a>
@@ -717,7 +720,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div class="wrap foot">
-    <div class="logo" style="font-size:1.05rem"><span class="logo-mark" style="width:28px;height:28px;font-size:.85rem">📸</span>EventLens</div>
+    <div class="logo" style="font-size:1.05rem"><img src="./logo.png" alt="" class="logo-mark" width="28" height="28" style="width:28px;height:28px">EventLens</div>
     <nav class="foot-links" aria-label="Liens de pied de page">
       <a href="#comment">Comment ça marche</a>
       <a href="#fonctionnalites">Fonctionnalités</a>
@@ -729,7 +732,7 @@
       <a href="./support.html">Assistance</a>
     </nav>
     <div>
-      <a href="mailto:walidgaddouch@yahoo.fr">walidgaddouch@yahoo.fr</a>
+      <a href="mailto:wagaddapps@gmail.com">wagaddapps@gmail.com</a>
       <span style="margin-left:16px">© 2026 EventLens</span>
     </div>
   </div>
