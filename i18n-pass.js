@@ -39,7 +39,8 @@ window.ELI18N.register({
   "pass.msgOk": "Connecté. Choisissez votre événement.",
   "pass.msgPick": "Choisissez l'événement à faire passer en premium.",
   "pass.msgEventsFail": "Impossible de lire vos événements : ",
-  "pass.msgAllPremium": "Tous vos événements ouverts sont déjà premium."
+  "pass.msgAllPremium": "Tous vos événements ouverts sont déjà premium.",
+  "pass.promo": "Code promotionnel appliqué au paiement : {code}"
  },
  "en": {
   "pass.kicker": "For your event",
@@ -79,7 +80,8 @@ window.ELI18N.register({
   "pass.msgOk": "Signed in. Choose your event.",
   "pass.msgPick": "Choose the event to upgrade.",
   "pass.msgEventsFail": "Could not read your events: ",
-  "pass.msgAllPremium": "All your open events are already premium."
+  "pass.msgAllPremium": "All your open events are already premium.",
+  "pass.promo": "Promo code applied at checkout: {code}"
  },
  "nl": {
   "pass.kicker": "Voor je evenement",
@@ -119,7 +121,8 @@ window.ELI18N.register({
   "pass.msgOk": "Aangemeld. Kies je evenement.",
   "pass.msgPick": "Kies het evenement dat premium wordt.",
   "pass.msgEventsFail": "Kan je evenementen niet lezen: ",
-  "pass.msgAllPremium": "Al je open evenementen zijn al premium."
+  "pass.msgAllPremium": "Al je open evenementen zijn al premium.",
+  "pass.promo": "Kortingscode toegepast bij het afrekenen: {code}"
  },
  "ar": {
   "pass.kicker": "لمناسبتك",
@@ -159,7 +162,8 @@ window.ELI18N.register({
   "pass.msgOk": "تم تسجيل الدخول. اختر مناسبتك.",
   "pass.msgPick": "اختر المناسبة المراد ترقيتها.",
   "pass.msgEventsFail": "تعذّرت قراءة مناسباتك: ",
-  "pass.msgAllPremium": "كل مناسباتك المفتوحة مميّزة بالفعل."
+  "pass.msgAllPremium": "كل مناسباتك المفتوحة مميّزة بالفعل.",
+  "pass.promo": "سيُطبَّق رمز الخصم عند الدفع: {code}"
  },
  "tl": {
   "pass.kicker": "Para sa event ninyo",
@@ -199,7 +203,8 @@ window.ELI18N.register({
   "pass.msgOk": "Naka-sign in. Piliin ang event.",
   "pass.msgPick": "Piliin ang event na gagawing premium.",
   "pass.msgEventsFail": "Hindi mabasa ang mga event ninyo: ",
-  "pass.msgAllPremium": "Premium na lahat ng bukas ninyong event."
+  "pass.msgAllPremium": "Premium na lahat ng bukas ninyong event.",
+  "pass.promo": "Ilalapat sa checkout ang promo code: {code}"
  },
  "es": {
   "pass.kicker": "Para tu evento",
@@ -239,7 +244,8 @@ window.ELI18N.register({
   "pass.msgOk": "Sesión iniciada. Elige tu evento.",
   "pass.msgPick": "Elige el evento que pasa a premium.",
   "pass.msgEventsFail": "No se han podido leer tus eventos: ",
-  "pass.msgAllPremium": "Todos tus eventos abiertos ya son premium."
+  "pass.msgAllPremium": "Todos tus eventos abiertos ya son premium.",
+  "pass.promo": "Código promocional aplicado en el pago: {code}"
  },
  "hi": {
   "pass.kicker": "आपके इवेंट के लिए",
@@ -279,6 +285,7 @@ window.ELI18N.register({
   "pass.msgOk": "साइन इन हो गया। अपना इवेंट चुनें।",
   "pass.msgPick": "प्रीमियम करने वाला इवेंट चुनें।",
   "pass.msgEventsFail": "आपके इवेंट पढ़े नहीं जा सके: ",
-  "pass.msgAllPremium": "आपके सभी खुले इवेंट पहले से प्रीमियम हैं।"
+  "pass.msgAllPremium": "आपके सभी खुले इवेंट पहले से प्रीमियम हैं।",
+  "pass.promo": "भुगतान पर प्रोमो कोड लागू: {code}"
  }
 });

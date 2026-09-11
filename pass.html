@@ -125,6 +125,7 @@
         <label for="event" data-i18n="pass.choose">Quel événement passer en premium ?</label>
         <select id="event"></select>
         <button class="btn" id="buy" data-i18n="pass.buy">Acheter le pass — 39 €</button>
+        <p class="msg ok" id="promo-note" hidden></p>
       </div>
       <p id="no-event" hidden style="margin-top:18px;color:var(--muted);font-size:.9rem"
          data-i18n="pass.noEvent">Aucun événement sur ce compte. Créez-le d'abord dans l'application,
@@ -160,6 +161,13 @@
 
   // Prix du produit « EventLens Pass Événement » (paiement unique, 39 €).
   var PASS_PRICE_ID = 'pri_01m27qamgqrqcbfr2m1vax4n6r';
+
+  // Promotion : ?promo=CODE applique la remise au paiement. Diffuser un lien
+  // promotionnel ne demande donc ni republication ni second prix — et une remise
+  // éteinte côté Paddle est refusée au checkout, ce qui fait de son état
+  // (./scripts/paddle-api.py promo on|off) le seul interrupteur.
+  var promo = ((location.search.match(/[?&]promo=([^&]*)/) || [])[1] || '');
+  promo = decodeURIComponent(promo).trim().toUpperCase().slice(0, 40);
 
   var msg = document.getElementById('msg');
   var T = function (k) { return window.ELI18N.t(k); };
@@ -210,6 +218,14 @@
       });
   }
 
+  if (promo) {
+    var note = document.getElementById('promo-note');
+    note.hidden = false;
+    var showPromo = function () { note.textContent = T('pass.promo').replace('{code}', promo); };
+    showPromo();
+    window.ELI18N.onChange(showPromo);
+  }
+
   sb.auth.getUser().then(function (r) {
     // Une session anonyme ne peut pas acheter : le webhook n'aurait aucun compte
     // à recréditer, et l'organisateur perdrait son pass en changeant de téléphone.
@@ -240,11 +256,13 @@
     // custom_data est ce que lit paddle-webhook. L'identifiant du compte vient
     // d'une session authentifiée, et le webhook vérifie que l'événement lui
     // appartient : modifier la page ne permet pas de créditer l'événement d'un autre.
-    Paddle.Checkout.open({
+    var checkout = {
       items: [{ priceId: PASS_PRICE_ID, quantity: 1 }],
       customer: { email: user.email },
       customData: { user_id: user.id, event_id: eventId }
-    });
+    };
+    if (promo) checkout.discountCode = promo;
+    Paddle.Checkout.open(checkout);
   });
 })();
 </script>
