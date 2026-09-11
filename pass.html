@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="./favicon.png">
+<title>Pass Événement — EventLens</title>
+<meta name="description" content="Passez un événement EventLens en premium : invités et photos illimités, haute définition, Selfie-Match, diaporama sans filigrane, archives 60 jours.">
+<style>
+  :root{
+    --bg:#0F1220; --bg-soft:#151A2E; --bg-card:#1A2038;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14);
+    --text:#F2F3F8; --muted:#A6ACC4;
+    --violet:#6D5DF6; --rose:#FF5E9C; --orange:#FF9A3D;
+    --grad:linear-gradient(100deg,#6D5DF6 0%,#FF5E9C 52%,#FF9A3D 100%);
+    --radius:20px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  a{color:inherit}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+  header{padding:22px 0;border-bottom:1px solid var(--border)}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:1.15rem}
+  .dot{width:26px;height:26px;border-radius:9px;object-fit:cover;flex-shrink:0}
+  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .kicker{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--rose);margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,4vw,2.7rem);line-height:1.15;letter-spacing:-.02em;margin-bottom:12px}
+  .lede{color:var(--muted);max-width:62ch;margin-bottom:34px}
+  section{padding:56px 0}
+  .cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:26px;
+    display:flex;flex-direction:column}
+  .card.hot{border-color:var(--border-strong);box-shadow:0 0 0 1px rgba(109,93,246,.35),0 18px 50px -22px rgba(109,93,246,.5)}
+  .tag{display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    background:var(--grad);color:#fff;padding:4px 10px;border-radius:999px;margin-bottom:12px;align-self:flex-start}
+  .card h2{font-size:1.25rem;margin-bottom:6px}
+  .card p.sub{color:var(--muted);font-size:.92rem;margin-bottom:18px}
+  .price{font-size:2rem;font-weight:900;letter-spacing:-.02em}
+  .price small{font-size:.95rem;font-weight:600;color:var(--muted)}
+  ul{list-style:none;margin:18px 0 24px;display:grid;gap:9px}
+  li{padding-left:26px;position:relative;font-size:.94rem;color:var(--text)}
+  li::before{content:"";position:absolute;left:0;top:.5em;width:14px;height:8px;
+    border-left:2px solid var(--rose);border-bottom:2px solid var(--rose);transform:rotate(-45deg)}
+  li.no{color:var(--muted)}
+  li.no::before{border-color:var(--muted);transform:none;border-left:none;border-bottom:2px solid var(--muted);top:.75em}
+  .btn{all:unset;cursor:pointer;text-align:center;margin-top:auto;padding:13px 20px;border-radius:14px;
+    font-weight:800;font-size:.95rem;background:var(--grad);color:#fff}
+  .btn.ghost{background:transparent;border:1px solid var(--border-strong);color:var(--text)}
+  .btn[disabled]{opacity:.5;cursor:not-allowed}
+  .panel{margin-top:34px;background:var(--bg-soft);border:1px solid var(--border);
+    border-radius:var(--radius);padding:24px;max-width:520px}
+  .panel h3{font-size:1.05rem;margin-bottom:6px}
+  .panel p{color:var(--muted);font-size:.9rem;margin-bottom:16px}
+  label{display:block;font-size:.82rem;font-weight:700;color:var(--muted);margin:0 0 6px}
+  input{width:100%;padding:12px 14px;margin-bottom:14px;border-radius:12px;border:1px solid var(--border-strong);
+    background:var(--bg);color:var(--text);font-size:.95rem;font-family:inherit}
+  select{width:100%;padding:12px 14px;margin-bottom:14px;border-radius:12px;
+    border:1px solid var(--border-strong);background:var(--bg);color:var(--text);
+    font-size:.95rem;font-family:inherit}
+  .msg{font-size:.88rem;margin-top:12px;min-height:1.3em}
+  .msg.err{color:#FF8A8E}
+  .msg.ok{color:#7BE0C0}
+  .who{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  footer{border-top:1px solid var(--border);padding:28px 0;color:var(--muted);font-size:.86rem}
+  footer a{text-decoration:underline}
+  .langbar{display:flex;gap:5px;flex-wrap:wrap;padding:14px 0 0}
+  .langbar button{all:unset;cursor:pointer;font-size:18px;line-height:1;padding:6px 8px;border-radius:10px;border:1px solid var(--border)}
+  .langbar button[aria-pressed="true"]{border-color:var(--border-strong);background:rgba(255,255,255,.08)}
+  .note{color:var(--muted);font-size:.85rem;margin-top:22px;max-width:70ch}
+  @media (max-width:380px){
+    .wrap{padding:0 14px}
+    section{padding:40px 0}
+    .card{padding:20px}
+    .price{font-size:1.75rem}
+  }
+</style>
+</head>
+<body>
+
+<header><div class="wrap"><a href="./" class="brand"><img src="./logo.png" alt="" class="dot" width="26" height="26">EventLens</a></div></header>
+<div data-i18n-switcher class="langbar wrap" aria-label="Langue"></div>
+
+<section class="wrap">
+  <span class="kicker" data-i18n="pass.kicker">Pour votre événement</span>
+  <h1 data-i18n-html="pass.h1">Le grand jour, <span class="grad-text">sans aucune limite</span></h1>
+  <p class="lede" data-i18n="pass.lede">Le Pass Événement s'achète une fois, pour un événement précis.
+     Aucun abonnement, rien à résilier : la fête passée, il n'y a plus rien à payer.</p>
+
+  <div class="cards" style="max-width:520px">
+    <div class="card hot">
+      <span class="tag" data-i18n="pass.tag">Paiement unique</span>
+      <h2 data-i18n="pass.name">Pass Événement Premium</h2>
+      <p class="sub" data-i18n="pass.sub">Tout EventLens, pour un événement inoubliable.</p>
+      <div class="price" data-i18n-html="pass.price">39 €<small> / événement</small></div>
+      <ul>
+        <li data-i18n="pass.f.unlimited">Invités &amp; photos illimités</li>
+        <li data-i18n="pass.f.hd">Qualité HD</li>
+        <li data-i18n="pass.f.selfie">Selfie-Match</li>
+        <li data-i18n="pass.f.wall">Photo wall sans filigrane</li>
+        <li data-i18n="pass.f.albums">Albums intelligents par IA</li>
+        <li data-i18n="pass.f.retention">Archives conservées 60 jours</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel" id="panel">
+    <div id="signed-out">
+      <h3 data-i18n="pass.signinH">Connectez-vous d'abord</h3>
+      <p data-i18n="pass.signinSub">Utilisez le compte que vous avez créé dans l'application EventLens.
+         C'est là que se trouve l'événement à faire passer en premium.</p>
+      <label for="email" data-i18n="pass.email">Adresse e-mail</label>
+      <input id="email" type="email" autocomplete="email" placeholder="vous@exemple.com" data-i18n-ph="pass.emailPh">
+      <label for="pw" data-i18n="pass.pw">Mot de passe</label>
+      <input id="pw" type="password" autocomplete="current-password" placeholder="••••••••">
+      <button class="btn" id="signin" style="margin-top:4px" data-i18n="pass.signin">Se connecter</button>
+    </div>
+    <div id="signed-in" hidden>
+      <div class="who">
+        <div><h3 style="margin:0" data-i18n="pass.signedIn">Connecté</h3><p id="who-email" style="margin:0"></p></div>
+        <button class="btn ghost" id="signout" style="margin:0;padding:9px 16px" data-i18n="pass.switch">Changer de compte</button>
+      </div>
+      <div id="picker" hidden style="margin-top:18px">
+        <label for="event" data-i18n="pass.choose">Quel événement passer en premium ?</label>
+        <select id="event"></select>
+        <button class="btn" id="buy" data-i18n="pass.buy">Acheter le pass — 39 €</button>
+      </div>
+      <p id="no-event" hidden style="margin-top:18px;color:var(--muted);font-size:.9rem"
+         data-i18n="pass.noEvent">Aucun événement sur ce compte. Créez-le d'abord dans l'application,
+         puis revenez ici : le pass s'applique à un événement existant.</p>
+    </div>
+    <p class="msg" id="msg"></p>
+  </div>
+
+  <p class="note" data-i18n="pass.paddleNote">Les paiements sont traités par Paddle, qui agit comme vendeur et émet la
+     facture avec la TVA applicable. Le pass s'applique à l'événement choisi dès la fin du paiement, et y reste
+     jusqu'à sa clôture — y compris s'il a déjà commencé.</p>
+</section>
+
+<footer class="wrap">
+  <a href="./" data-i18n="pass.home">Accueil</a> · <a href="./pro.html" data-i18n="pass.pro">Offres pro</a> ·
+  <a href="./terms.html" data-i18n="pass.terms">Conditions</a> ·
+  <a href="./privacy.html" data-i18n="pass.privacy">Confidentialité</a> ·
+  <a href="./support.html" data-i18n="pass.support">Support</a>
+</footer>
+
+<script src="./i18n.js"></script>
+<script src="./i18n-pass.js"></script>
+<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
+<script>
+(function () {
+  // Mêmes identifiants publics que pro.html : la clé anon est protégée par les
+  // policies RLS, et le jeton client Paddle est fait pour vivre dans un
+  // navigateur. Jamais la clé API Paddle ici — elle peut réécrire les prix.
+  var SUPABASE_URL = 'https://qxvbzlqqlezjmvwgzbyi.supabase.co';
+  var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF4dmJ6bHFxbGV6am12d2d6YnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MjU3ODgsImV4cCI6MjA5ODQwMTc4OH0.zqoYlWrAGKq19ZVYRuGcNFrqaSuKQj9IZN_icHeS8vM';
+  var PADDLE_CLIENT_TOKEN = 'live_c14da0ad9fba57d3242d85f3c9d';
+
+  // Prix du produit « EventLens Pass Événement » (paiement unique, 39 €).
+  var PASS_PRICE_ID = 'pri_01m27qamgqrqcbfr2m1vax4n6r';
+
+  var msg = document.getElementById('msg');
+  var T = function (k) { return window.ELI18N.t(k); };
+  var user = null;
+
+  function say(text, kind) {
+    msg.textContent = text || '';
+    msg.className = 'msg' + (kind ? ' ' + kind : '');
+  }
+
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  var ready = PADDLE_CLIENT_TOKEN.indexOf('REMPLACER') !== 0 &&
+              PASS_PRICE_ID.indexOf('pri_REMPLACER') !== 0;
+  if (ready) Paddle.Initialize({ token: PADDLE_CLIENT_TOKEN });
+
+  function renderUser() {
+    document.getElementById('signed-out').hidden = !!user;
+    document.getElementById('signed-in').hidden = !user;
+    if (user) {
+      document.getElementById('who-email').textContent = user.email;
+      loadEvents();
+    }
+  }
+
+  // Un événement clôturé n'a plus rien à débloquer : ses invités ne peuvent plus
+  // envoyer de photos. On ne propose que les événements ouverts et encore gratuits.
+  function loadEvents() {
+    var sel = document.getElementById('event');
+    sb.from('events')
+      .select('id,name,code,tier,status')
+      .eq('owner_id', user.id)
+      .eq('status', 'open')
+      .order('created_at', { ascending: false })
+      .then(function (r) {
+        if (r.error) { say(T('pass.msgEventsFail') + r.error.message, 'err'); return; }
+        var rows = (r.data || []).filter(function (e) { return e.tier !== 'premium'; });
+        sel.innerHTML = '';
+        rows.forEach(function (e) {
+          var o = document.createElement('option');
+          o.value = e.id;
+          o.textContent = e.name + ' (' + e.code + ')';
+          sel.appendChild(o);
+        });
+        document.getElementById('picker').hidden = !rows.length;
+        document.getElementById('no-event').hidden = !!rows.length;
+        if (!rows.length && (r.data || []).length) say(T('pass.msgAllPremium'), 'ok');
+      });
+  }
+
+  sb.auth.getUser().then(function (r) {
+    // Une session anonyme ne peut pas acheter : le webhook n'aurait aucun compte
+    // à recréditer, et l'organisateur perdrait son pass en changeant de téléphone.
+    if (r.data && r.data.user && !r.data.user.is_anonymous) user = r.data.user;
+    renderUser();
+  });
+
+  document.getElementById('signin').addEventListener('click', function () {
+    var email = document.getElementById('email').value.trim();
+    var pw = document.getElementById('pw').value;
+    if (!email || !pw) { say(T('pass.msgFill'), 'err'); return; }
+    say(T('pass.msgConnecting'));
+    sb.auth.signInWithPassword({ email: email, password: pw }).then(function (r) {
+      if (r.error) { say(T('pass.msgFail') + r.error.message, 'err'); return; }
+      user = r.data.user; renderUser(); say(T('pass.msgOk'), 'ok');
+    });
+  });
+
+  document.getElementById('signout').addEventListener('click', function () {
+    sb.auth.signOut().then(function () { user = null; renderUser(); say(''); });
+  });
+
+  document.getElementById('buy').addEventListener('click', function () {
+    if (!ready) { say(T('pass.msgNotReady'), 'err'); return; }
+    var eventId = document.getElementById('event').value;
+    if (!eventId) { say(T('pass.msgPick'), 'err'); return; }
+    say('');
+    // custom_data est ce que lit paddle-webhook. L'identifiant du compte vient
+    // d'une session authentifiée, et le webhook vérifie que l'événement lui
+    // appartient : modifier la page ne permet pas de créditer l'événement d'un autre.
+    Paddle.Checkout.open({
+      items: [{ priceId: PASS_PRICE_ID, quantity: 1 }],
+      customer: { email: user.email },
+      customData: { user_id: user.id, event_id: eventId }
+    });
+  });
+})();
+</script>
+</body>
+</html>
