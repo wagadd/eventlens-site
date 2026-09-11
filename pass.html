@@ -74,6 +74,8 @@
   .langbar button{all:unset;cursor:pointer;font-size:18px;line-height:1;padding:6px 8px;border-radius:10px;border:1px solid var(--border)}
   .langbar button[aria-pressed="true"]{border-color:var(--border-strong);background:rgba(255,255,255,.08)}
   .note{color:var(--muted);font-size:.85rem;margin-top:22px;max-width:70ch}
+  .sandbox{background:#FF9A3D;color:#1a1205;font-weight:800;font-size:.82rem;letter-spacing:.04em;
+    padding:9px 14px;border-radius:12px;margin-bottom:20px;text-align:center}
   @media (max-width:380px){
     .wrap{padding:0 14px}
     section{padding:40px 0}
@@ -88,6 +90,7 @@
 <div data-i18n-switcher class="langbar wrap" aria-label="Langue"></div>
 
 <section class="wrap">
+  <div id="sandbox-banner" hidden class="sandbox">MODE TEST — paiement fictif, aucun euro n'est débité</div>
   <span class="kicker" data-i18n="pass.kicker">Pour votre événement</span>
   <h1 data-i18n-html="pass.h1">Le grand jour, <span class="grad-text">sans aucune limite</span></h1>
   <p class="lede" data-i18n="pass.lede">Le Pass Événement s'achète une fois, pour un événement précis.
@@ -167,10 +170,21 @@
   // navigateur. Jamais la clé API Paddle ici — elle peut réécrire les prix.
   var SUPABASE_URL = 'https://qxvbzlqqlezjmvwgzbyi.supabase.co';
   var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF4dmJ6bHFxbGV6am12d2d6YnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MjU3ODgsImV4cCI6MjA5ODQwMTc4OH0.zqoYlWrAGKq19ZVYRuGcNFrqaSuKQj9IZN_icHeS8vM';
-  var PADDLE_CLIENT_TOKEN = 'live_c14da0ad9fba57d3242d85f3c9d';
+  // ?sandbox=1 bascule le paiement sur le compte Paddle de test : cartes fictives,
+  // aucun euro. La base Supabase reste la vraie — un achat de test accorde donc un
+  // vrai premium sur un vrai événement, ce qui est l'intérêt : on éprouve le
+  // circuit complet, pas une imitation. Un second site aurait figé le choix à la
+  // publication ; un paramètre le laisse à qui teste, sans toucher la page publique.
+  var SANDBOX = /[?&]sandbox=1(&|$)/.test(location.search);
+
+  var PADDLE_CLIENT_TOKEN = SANDBOX
+    ? 'test_REMPLACER_JETON_CLIENT_SANDBOX'
+    : 'live_c14da0ad9fba57d3242d85f3c9d';
 
   // Prix du produit « EventLens Pass Événement » (paiement unique, 29,99 €).
-  var PASS_PRICE_ID = 'pri_01m27qamgqrqcbfr2m1vax4n6r';
+  var PASS_PRICE_ID = SANDBOX
+    ? 'pri_01m27wejb5f7p1y2rh09detc7h'
+    : 'pri_01m27tf8bsc15syrpa8hv0mf2b';
 
   // Promotion : ?promo=CODE applique la remise au paiement. Diffuser un lien
   // promotionnel ne demande donc ni republication ni second prix — et une remise
@@ -178,6 +192,8 @@
   // (./scripts/paddle-api.py promo on|off) le seul interrupteur.
   var promo = ((location.search.match(/[?&]promo=([^&]*)/) || [])[1] || '');
   promo = decodeURIComponent(promo).trim().toUpperCase().slice(0, 40);
+
+  if (SANDBOX) document.getElementById('sandbox-banner').hidden = false;
 
   var msg = document.getElementById('msg');
   var T = function (k) { return window.ELI18N.t(k); };
@@ -190,9 +206,12 @@
 
   var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-  var ready = PADDLE_CLIENT_TOKEN.indexOf('REMPLACER') !== 0 &&
-              PASS_PRICE_ID.indexOf('pri_REMPLACER') !== 0;
-  if (ready) Paddle.Initialize({ token: PADDLE_CLIENT_TOKEN });
+  var ready = PADDLE_CLIENT_TOKEN.indexOf('REMPLACER') < 0;
+  if (ready) {
+    // L'ordre compte : l'environnement se règle AVANT l'initialisation.
+    if (SANDBOX) Paddle.Environment.set('sandbox');
+    Paddle.Initialize({ token: PADDLE_CLIENT_TOKEN });
+  }
 
   function renderUser() {
     document.getElementById('signed-out').hidden = !!user;
