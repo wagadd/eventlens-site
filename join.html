@@ -70,6 +70,9 @@
     outline: none;
   }
   input[type="text"]:focus { border-color: var(--violet); }
+  .or{ text-align:center; color:#8b93a7; font-size:.85rem; margin:14px 0 10px; }
+  .btn.ghost{ background:transparent; border:1px solid rgba(255,255,255,.22); color:#f2f3f8; }
+  .hint{ color:#8b93a7; font-size:.82rem; line-height:1.5; margin-top:10px; text-align:center; }
   #code {
     text-transform: uppercase;
     letter-spacing: 8px;
@@ -205,6 +208,9 @@
     <label for="pseudo" data-i18n="join.pseudo">Votre pseudo (facultatif)</label>
     <input type="text" id="pseudo" maxlength="40" autocomplete="nickname" placeholder="Ex. Tante Leïla" data-i18n-ph="join.pseudoPh" />
     <button class="btn" id="joinBtn" data-i18n="join.cta">Rejoindre</button>
+    <div class="or" data-i18n="join.or">ou</div>
+    <button class="btn ghost" id="appBtn" data-i18n="join.openApp">Ouvrir dans l'application EventLens</button>
+    <p class="hint" id="appHint" data-i18n="join.appHint">L'application ajoute la reconnaissance de vos photos par selfie et la galerie complète. Le web suffit pour envoyer.</p>
     <div class="msg" id="joinMsg"></div>
   </section>
 
@@ -297,6 +303,38 @@
     const { error } = await supabase.auth.signInAnonymously();
     if (error) throw new Error('Connexion impossible : ' + error.message);
   }
+
+  // --- 1 bis. Ouvrir dans l'application -------------------------------------
+  //
+  // Le web reste le chemin principal : le QR code promet « sans installation »,
+  // et cette promesse ne se reprend pas. Mais un invité qui a déjà l'app y gagne
+  // (Selfie-Match, galerie), alors on lui laisse le choix plutôt que de décider
+  // pour lui.
+  //
+  // ⚠️ UN SEUL ENDROIT À REMPLIR LE JOUR DE LA PUBLICATION : la ligne ci-dessous.
+  // Tant qu'elle est vide, l'appareil sans app reçoit un message honnête au lieu
+  // d'être expédié vers une fiche App Store qui n'existe pas.
+  const APP_STORE_URL = '';   // ex. https://apps.apple.com/app/id6810349450
+
+  $('appBtn').addEventListener('click', function () {
+    const code = (codeInput.value || '').trim().toUpperCase();
+    let left = false;
+    // Si l'app s'ouvre, la page passe en arrière-plan : c'est le seul signal
+    // fiable qu'un navigateur nous donne. Sans lui, on redirigerait un invité
+    // dont l'app vient de s'ouvrir.
+    const onHide = function () { left = true; };
+    document.addEventListener('visibilitychange', onHide, { once: true });
+    window.addEventListener('pagehide', onHide, { once: true });
+
+    setTimeout(function () {
+      document.removeEventListener('visibilitychange', onHide);
+      if (left || document.hidden) return;
+      if (APP_STORE_URL) { location.href = APP_STORE_URL; return; }
+      setMsg(joinMsg, 'err', window.ELI18N.t('join.appMissing'));
+    }, 1500);
+
+    location.href = 'eventlens://join/' + encodeURIComponent(code);
+  });
 
   // --- 2. Pré-remplissage du code depuis ?code=XXXXXX ---
   const urlCode = new URLSearchParams(location.search).get('code');

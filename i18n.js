@@ -33,7 +33,11 @@
       'join.limits': "Photos illimitées en taille (recompressées) · vidéos : 30 s et 60 Mo max",
       'join.caption': "Légende (facultative, appliquée à la première photo)",
       'join.captionPh': "Un petit mot avec vos photos…",
-      'join.more': "← En savoir plus sur EventLens"
+      'join.more': "← En savoir plus sur EventLens",
+      'join.or': "ou",
+      'join.openApp': "Ouvrir dans l'application EventLens",
+      'join.appHint': "L'application ajoute la reconnaissance de vos photos par selfie et la galerie complète. Le web suffit pour envoyer.",
+      'join.appMissing': "L'application n'est pas installée sur cet appareil. Continuez ici, c'est prévu pour."
     },
     en: {
       'tagline': "Share the moment, live.",
@@ -50,7 +54,11 @@
       'join.limits': "Unlimited photo size (recompressed) · videos: 30 s and 60 MB max",
       'join.caption': "Caption (optional, applied to the first photo)",
       'join.captionPh': "A few words with your photos…",
-      'join.more': "← Learn more about EventLens"
+      'join.more': "← Learn more about EventLens",
+      'join.or': "or",
+      'join.openApp': "Open in the EventLens app",
+      'join.appHint': "The app adds selfie matching and the full gallery. The web is enough to send photos.",
+      'join.appMissing': "The app isn't installed on this device. Carry on here — that's what it's for."
     },
     nl: {
       'tagline': "Deel het moment, live.",
@@ -67,7 +75,11 @@
       'join.limits': "Onbeperkte fotogrootte (gecomprimeerd) · video's: max. 30 s en 60 MB",
       'join.caption': "Tekst (optioneel, bij de eerste foto)",
       'join.captionPh': "Een woordje bij je foto's…",
-      'join.more': "← Meer over EventLens"
+      'join.more': "← Meer over EventLens",
+      'join.or': "of",
+      'join.openApp': "Openen in de EventLens-app",
+      'join.appHint': "De app voegt selfieherkenning en de volledige galerij toe. Het web volstaat om te versturen.",
+      'join.appMissing': "De app staat niet op dit toestel. Ga hier verder — daar is het voor."
     },
     ar: {
       'tagline': "شارك اللحظة، مباشرةً.",
@@ -84,7 +96,11 @@
       'join.limits': "حجم الصور غير محدود (يُعاد ضغطها) · الفيديو: ٣٠ ثانية و٦٠ ميغابايت كحد أقصى",
       'join.caption': "تعليق (اختياري، يُضاف إلى الصورة الأولى)",
       'join.captionPh': "كلمة مع صورك…",
-      'join.more': "← اعرف المزيد عن EventLens"
+      'join.more': "← اعرف المزيد عن EventLens",
+      'join.or': "أو",
+      'join.openApp': "الفتح في تطبيق EventLens",
+      'join.appHint': "يضيف التطبيق التعرّف على صورك بالسيلفي والمعرض الكامل. والويب يكفي للإرسال.",
+      'join.appMissing': "التطبيق غير مثبّت على هذا الجهاز. تابع من هنا، فهذه الصفحة مُعدّة لذلك."
     },
     tl: {
       'tagline': "Ibahagi ang sandali, live.",
@@ -101,7 +117,11 @@
       'join.limits': "Walang limitasyon sa laki ng litrato (kinokompress) · video: 30 s at 60 MB max",
       'join.caption': "Caption (opsyonal, para sa unang litrato)",
       'join.captionPh': "Isang mensahe kasama ang litrato…",
-      'join.more': "← Alamin pa ang EventLens"
+      'join.more': "← Alamin pa ang EventLens",
+      'join.or': "o",
+      'join.openApp': "Buksan sa EventLens app",
+      'join.appHint': "Nagdadagdag ang app ng selfie matching at buong gallery. Sapat na ang web para magpadala.",
+      'join.appMissing': "Wala ang app sa device na ito. Magpatuloy dito — para diyan ito."
     },
     es: {
       'tagline': "Comparte el momento, en directo.",
@@ -118,7 +138,11 @@
       'join.limits': "Tamaño de fotos sin límite (se recomprimen) · vídeos: 30 s y 60 MB máx.",
       'join.caption': "Texto (opcional, en la primera foto)",
       'join.captionPh': "Unas palabras con tus fotos…",
-      'join.more': "← Más sobre EventLens"
+      'join.more': "← Más sobre EventLens",
+      'join.or': "o",
+      'join.openApp': "Abrir en la aplicación EventLens",
+      'join.appHint': "La aplicación añade el reconocimiento por selfie y la galería completa. La web basta para enviar.",
+      'join.appMissing': "La aplicación no está instalada en este dispositivo. Sigue aquí, para eso está."
     },
     hi: {
       'tagline': "पल को साझा करें, लाइव।",
@@ -135,7 +159,11 @@
       'join.limits': "फ़ोटो का आकार असीमित (पुनः संपीड़ित) · वीडियो: 30 स., 60 MB तक",
       'join.caption': "कैप्शन (वैकल्पिक, पहली फ़ोटो पर)",
       'join.captionPh': "आपकी फ़ोटो के साथ कुछ शब्द…",
-      'join.more': "← EventLens के बारे में और जानें"
+      'join.more': "← EventLens के बारे में और जानें",
+      'join.or': "या",
+      'join.openApp': "EventLens ऐप में खोलें",
+      'join.appHint': "ऐप सेल्फ़ी से फ़ोटो पहचानना और पूरी गैलरी जोड़ता है। भेजने के लिए वेब ही काफ़ी है।",
+      'join.appMissing': "इस डिवाइस पर ऐप नहीं है। यहीं जारी रखें — यह उसी के लिए है।"
     }
   };
 
