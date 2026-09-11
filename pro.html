@@ -55,6 +55,11 @@
     font-weight:800;font-size:.95rem;background:var(--grad);color:#fff}
   .btn.ghost{background:transparent;border:1px solid var(--border-strong);color:var(--text)}
   .btn[disabled]{opacity:.5;cursor:not-allowed}
+  .tabs{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--border);
+    border-radius:999px;background:var(--bg);margin-bottom:18px}
+  .tabs button{all:unset;cursor:pointer;padding:7px 16px;border-radius:999px;
+    font-weight:700;font-size:.88rem;color:var(--muted)}
+  .tabs button[aria-pressed="true"]{background:var(--grad);color:#fff}
   .panel{margin-top:34px;background:var(--bg-soft);border:1px solid var(--border);
     border-radius:var(--radius);padding:24px;max-width:520px}
   .panel h3{font-size:1.05rem;margin-bottom:6px}
@@ -130,14 +135,19 @@
 
   <div class="panel" id="panel">
     <div id="signed-out">
-      <h3 data-i18n="pro.signinH">Connectez-vous d'abord</h3>
-      <p data-i18n="pro.signinSub">Utilisez le compte que vous avez créé dans l'application EventLens.
+      <div class="tabs" role="group" aria-label="Compte">
+        <button type="button" id="tab-in" aria-pressed="true" data-i18n="pro.tabSignin">Se connecter</button>
+        <button type="button" id="tab-up" aria-pressed="false" data-i18n="pro.tabSignup">Créer un compte</button>
+      </div>
+      <h3 id="auth-h" data-i18n="pro.signinH">Connectez-vous d'abord</h3>
+      <p id="auth-sub" data-i18n="pro.signinSub">Utilisez le compte que vous avez créé dans l'application EventLens.
          C'est lui qui recevra l'abonnement.</p>
       <label for="email" data-i18n="pro.email">Adresse e-mail</label>
       <input id="email" type="email" autocomplete="email" placeholder="vous@exemple.com" data-i18n-ph="pro.emailPh">
       <label for="pw" data-i18n="pro.pw">Mot de passe</label>
       <input id="pw" type="password" autocomplete="current-password" placeholder="••••••••">
       <button class="btn" id="signin" style="margin-top:4px" data-i18n="pro.signin">Se connecter</button>
+      <p class="note" id="auth-note" hidden style="margin-top:14px" data-i18n="pro.appNote">Vous organisez déjà un événement sans compte ? Créez votre compte depuis l'application (Compte → Créer un compte) : vos événements suivront. Un compte créé ici est vide.</p>
     </div>
     <div id="signed-in" hidden>
       <div class="who">
@@ -210,13 +220,62 @@
     renderUser();
   });
 
+  // Connexion ou inscription, même formulaire. L'inscription existe parce que la
+  // page ne servait à rien sans compte ; l'avertissement qui l'accompagne existe
+  // parce qu'elle ne résout PAS le cas courant : l'app ouvre une session anonyme,
+  // et un compte créé ici serait un compte neuf, sans les événements déjà créés.
+  // Ceux-là se récupèrent en créant le compte depuis l'app, qui convertit la
+  // session anonyme sur place au lieu d'en ouvrir une autre.
+  var mode = 'in';
+
+  function setMode(m) {
+    mode = m;
+    document.getElementById('tab-in').setAttribute('aria-pressed', String(m === 'in'));
+    document.getElementById('tab-up').setAttribute('aria-pressed', String(m === 'up'));
+    document.getElementById('auth-h').setAttribute('data-i18n', m === 'in' ? 'pro.signinH' : 'pro.signupH');
+    document.getElementById('auth-sub').setAttribute('data-i18n', m === 'in' ? 'pro.signinSub' : 'pro.signupSub');
+    document.getElementById('signin').setAttribute('data-i18n', m === 'in' ? 'pro.signin' : 'pro.signup');
+    document.getElementById('pw').setAttribute('autocomplete', m === 'in' ? 'current-password' : 'new-password');
+    document.getElementById('auth-note').hidden = m !== 'up';
+    say('');
+    window.ELI18N.apply();   // réécrit les libellés dans la langue courante
+  }
+
+  document.getElementById('tab-in').addEventListener('click', function () { setMode('in'); });
+  document.getElementById('tab-up').addEventListener('click', function () { setMode('up'); });
+
   document.getElementById('signin').addEventListener('click', function () {
     var email = document.getElementById('email').value.trim();
     var pw = document.getElementById('pw').value;
     if (!email || !pw) { say(T('pro.msgFill'), 'err'); return; }
+
+    if (mode === 'up') {
+      say(T('pro.msgConnecting'));
+      sb.auth.signUp({
+        email: email,
+        password: pw,
+        // Sans quoi le lien de confirmation renvoie sur le site_url du projet.
+        options: { emailRedirectTo: location.origin + location.pathname }
+      }).then(function (r) {
+        if (r.error) { say(T('pro.msgFail') + r.error.message, 'err'); return; }
+        // Avec la confirmation d'e-mail activée, signUp ne rend pas de session :
+        // il faut passer par le lien reçu. Sinon on est connecté tout de suite.
+        if (r.data.session && r.data.user) {
+          user = r.data.user; renderUser(); say(T('pro.msgOk'), 'ok');
+        } else {
+          say(T('pro.msgSignupOk'), 'ok');
+        }
+      });
+      return;
+    }
+
     say(T('pro.msgConnecting'));
     sb.auth.signInWithPassword({ email: email, password: pw }).then(function (r) {
-      if (r.error) { say(T('pro.msgFail') + r.error.message, 'err'); return; }
+      if (r.error) {
+        var notConfirmed = /not confirmed|non confirm/i.test(r.error.message || '');
+        say(notConfirmed ? T('pro.msgUnconfirmed') : T('pro.msgFail') + r.error.message, 'err');
+        return;
+      }
       user = r.data.user; renderUser(); say(T('pro.msgOk'), 'ok');
     });
   });
