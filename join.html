@@ -123,7 +123,7 @@
   .drop p { margin-top: 8px; font-size: 15px; }
   .drop small { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; }
 
-  #fileInput { display: none; }
+  #fileInput, #entryInput { display: none; }
 
   #progress { margin-top: 8px; }
   .counter { font-size: 14px; color: var(--muted); margin: 14px 2px 8px; display: none; }
@@ -235,6 +235,11 @@
         <small data-i18n="join.limits">Photos illimitées en taille (recompressées) &middot; vidéos : 30 s et 60 Mo max</small>
       </div>
       <input type="file" id="fileInput" accept="image/*,video/*" multiple />
+      <!-- Portrait d'entrée : capture directe, jamais la pellicule — on demande à
+           voir qui est là, pas une photo choisie. `capture="user"` ouvre la caméra
+           frontale sur mobile ; sur un ordinateur le navigateur l'ignore, et c'est
+           sans conséquence, la salle d'attente est un usage de téléphone. -->
+      <input type="file" id="entryInput" accept="image/*" capture="user" />
 
       <label for="caption" data-i18n="join.caption">Légende (facultative, appliquée à la première photo)</label>
       <input type="text" id="caption" maxlength="200" placeholder="Un petit mot avec vos photos…" data-i18n-ph="join.captionPh" />
@@ -333,12 +338,28 @@
       setMsg(joinMsg, 'err', window.ELI18N.t('join.appMissing'));
     }, 1500);
 
-    location.href = 'eventlens://join/' + encodeURIComponent(code);
+    location.href = inviteToken
+      ? 'eventlens://join?invite=' + encodeURIComponent(inviteToken)
+      : 'eventlens://join/' + encodeURIComponent(code);
   });
 
-  // --- 2. Pré-remplissage du code depuis ?code=XXXXXX ---
-  const urlCode = new URLSearchParams(location.search).get('code');
+  // --- 2. Pré-remplissage du code depuis ?code=XXXXXX, ou invitation ?i=JETON ---
+  //
+  // Une invitation désigne son événement à elle seule : elle ne porte pas le code,
+  // et c'est le sens même du mode invitation — un lien intercepté ne doit pas
+  // rouvrir la grande porte. Le champ « code » disparaît donc dans ce cas.
+  const urlParams = new URLSearchParams(location.search);
+  const urlCode = urlParams.get('code');
+  const inviteToken = (urlParams.get('i') || '').trim();
   if (urlCode) codeInput.value = urlCode.toUpperCase().slice(0, 6);
+  if (inviteToken) {
+    // Le libellé et le champ sont frères dans la carte, pas imbriqués : les
+    // masquer nommément, sous peine d'emporter toute la section.
+    const lbl = document.querySelector('label[for="code"]');
+    if (lbl) lbl.classList.add('hidden');
+    codeInput.classList.add('hidden');
+    setMsg(joinMsg, 'info', 'Vous tenez une invitation personnelle — pas besoin de code.');
+  }
   codeInput.addEventListener('input', () => {
     codeInput.value = codeInput.value.toUpperCase().replace(/\s/g, '');
   });
@@ -346,15 +367,85 @@
   // --- 3. Rejoindre l'événement ---
   function joinErrorMessage(raw) {
     const m = String(raw || '');
+    if (m.includes('guest_limit_custom')) return 'Cet événement est complet : l\u2019organisateur a fixé un nombre maximum d\u2019invités.';
     if (m.includes('guest_limit_reached')) return 'Cet événement est complet (30 invités en offre gratuite).';
+    if (m.includes('invite_required')) return 'Cet événement se rejoint sur invitation. Demandez votre lien personnel à l\u2019organisateur.';
+    if (m.includes('invite_already_used')) return 'Cette invitation a déjà été utilisée par quelqu\u2019un d\u2019autre. Prévenez l\u2019organisateur : il peut vous en réémettre une.';
+    if (m.includes('invite_other_device')) return 'Cette invitation est liée à un autre téléphone : le premier qui l\u2019a ouverte.';
+    if (m.includes('invite_revoked')) return 'Cette invitation a été annulée. Demandez-en une nouvelle à l\u2019organisateur.';
+    if (m.includes('invite_invalid')) return 'Cette invitation n\u2019existe pas.';
+    if (m.includes('entry_refused')) return 'L\u2019organisateur n\u2019a pas validé votre entrée.';
     if (m.includes('Code invalide')) return 'Code invalide';
     if (m.toLowerCase().includes('banni')) return 'Accès refusé : vous avez été bloqué sur cet événement.';
     return 'Impossible de rejoindre l’événement : ' + m;
   }
 
+  // La salle d'attente, vue du web : on vérifie toutes les quinze secondes plutôt
+  // que de laisser l'invité recharger la page. Il est debout dans une salle.
+  // Le portrait d'entrée, côté web. Il n'est comparé par personne : l'organisateur
+  // le regarde au moment de décider, puis il s'efface avec la décision. C'est ce
+  // qui le distingue du selfie de Selfie-Match, lequel produit une empreinte
+  // faciale et ne peut donc jamais être exigé.
+  const entryInput = $('entryInput');
+  let entryPending = false;
+
+  entryInput.addEventListener('change', async function () {
+    const file = entryInput.files && entryInput.files[0];
+    entryInput.value = '';
+    if (!file || !currentEvent || !guestId) return;
+    setMsg(eventMsg, 'info', '<span class="spin"></span>Envoi de la photo…');
+    try {
+      const path = currentEvent.id + '/entry/' + guestId + '.jpg';
+      const { error: upErr } = await supabase.storage
+        .from('event-media')
+        .upload(path, file, { contentType: 'image/jpeg', upsert: true });
+      if (upErr) throw new Error(upErr.message);
+      const { error } = await supabase.rpc('set_entry_photo', { p_guest_id: guestId, p_path: path });
+      if (error) throw new Error(error.message);
+      entryPending = false;
+      setMsg(eventMsg, 'info',
+        '<span class="spin"></span>Photo envoyée. L\u2019organisateur doit maintenant vous laisser entrer.');
+    } catch (e) {
+      setMsg(eventMsg, 'err', 'Envoi de la photo impossible : ' + e.message);
+    }
+  });
+
+  function waitForApproval(eventId, eventName) {
+    joinCard.classList.add('hidden');
+    uploadCard.classList.remove('hidden');
+    uploadZone.classList.add('hidden');
+    roomChoice.classList.add('hidden');
+    eventNameEl.textContent = eventName;
+    entryPending = !!(currentEvent && currentEvent.require_entry_photo);
+    if (entryPending) {
+      setMsg(eventMsg, 'info',
+        'L\u2019organisateur demande une photo avant de laisser entrer. '
+        + '<button class="btn ghost" id="entryBtn" style="margin-top:10px">Prendre une photo</button>');
+      const btn = $('entryBtn');
+      if (btn) btn.addEventListener('click', function () { entryInput.click(); });
+      return startApprovalPolling(eventId);
+    }
+    setMsg(eventMsg, 'info',
+      '<span class="spin"></span>Votre demande est partie. L\u2019organisateur doit vous laisser entrer.');
+    return startApprovalPolling(eventId);
+  }
+
+  function startApprovalPolling(eventId) {
+    const timer = setInterval(async function () {
+      try {
+        const { data } = await supabase.rpc('my_guest_status', { p_event_id: eventId });
+        if (data === 'approved') { clearInterval(timer); location.reload(); }
+        else if (data === 'refused') {
+          clearInterval(timer);
+          setMsg(eventMsg, 'err', 'L\u2019organisateur n\u2019a pas validé votre entrée.');
+        }
+      } catch (e) { /* réseau : on retentera */ }
+    }, 15000);
+  }
+
   async function join() {
     const code = codeInput.value.trim().toUpperCase();
-    if (code.length !== 6) {
+    if (!inviteToken && code.length !== 6) {
       setMsg(joinMsg, 'err', 'Entrez le code à 6 caractères de l’événement.');
       return;
     }
@@ -363,9 +454,10 @@
     try {
       await ensureAuth();
       lastJoinParams = {
-        p_code: code,
+        p_code: inviteToken ? null : code,
         p_pseudo: pseudoInput.value.trim() || null,
         p_device: deviceId(),
+        p_invite: inviteToken || null,
       };
       const { data, error } = await supabase.rpc('join_event', lastJoinParams);
       if (error) throw new Error(error.message);
@@ -374,6 +466,12 @@
       currentEvent = data.event;
       currentRoom = data.room || null;
       setMsg(joinMsg, '', '');
+
+      if (data.status === 'pending') {
+        waitForApproval(currentEvent.id, currentEvent.name);
+        return;
+      }
+
       joinCard.classList.add('hidden');
       uploadCard.classList.remove('hidden');
       eventNameEl.textContent = currentEvent.name;
