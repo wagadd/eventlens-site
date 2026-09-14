@@ -124,6 +124,9 @@
   .drop small { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; }
 
   #fileInput, #entryInput { display: none; }
+  .keepApp { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.12); text-align: left; }
+  .keepApp strong { display: block; margin-bottom: 6px; }
+  .keepApp p { margin: 0 0 10px; opacity: 0.85; font-size: 14px; line-height: 1.5; }
 
   #progress { margin-top: 8px; }
   .counter { font-size: 14px; color: var(--muted); margin: 14px 2px 8px; display: none; }
@@ -410,12 +413,23 @@
     }
   });
 
-  function waitForApproval(eventId, eventName) {
+  async function waitForApproval(eventId, eventName) {
     joinCard.classList.add('hidden');
     uploadCard.classList.remove('hidden');
     uploadZone.classList.add('hidden');
     roomChoice.classList.add('hidden');
     eventNameEl.textContent = eventName;
+
+    // ⚠️ `join_event` ne renvoie PAS `require_entry_photo` : la migration 0034 a
+    // ajouté le champ à `get_event_public` seulement. On lisait donc un
+    // `undefined`, le bouton « Prendre une photo » ne s'affichait jamais, et
+    // l'invité restait bloqué à la porte d'un événement qui attendait son
+    // portrait. On redemande l'événement à la fonction qui, elle, le porte.
+    try {
+      const { data: pub } = await supabase.rpc('get_event_public', { p_event_id: eventId });
+      if (pub) currentEvent = Object.assign({}, currentEvent, pub);
+    } catch (e) { /* réseau : on retombe sur ce qu'on a déjà */ }
+
     entryPending = !!(currentEvent && currentEvent.require_entry_photo);
     if (entryPending) {
       setMsg(eventMsg, 'info',
@@ -735,8 +749,24 @@
     }
 
     if (sent > 0) {
+      // Le web envoie, l'application garde : c'est le moment où ça se dit. Juste
+      // après l'envoi, l'invité vient de confier ses photos à un événement qu'il
+      // ne pourra plus rouvrir depuis cette page — c'est là qu'il a une raison
+      // d'installer l'app, et nulle part ailleurs.
+      //
+      // Le bloc ne s'affiche que si APP_STORE_URL est renseignée : inviter à
+      // télécharger une application introuvable serait pire que se taire.
+      var T = window.ELI18N && window.ELI18N.t ? window.ELI18N.t : function (k) { return k; };
+      var keep = APP_STORE_URL
+        ? '<div class="keepApp">'
+          + '<strong>' + T('join.keepTitle') + '</strong>'
+          + '<p>' + T('join.keepBody') + '</p>'
+          + '<a class="btn ghost" href="' + APP_STORE_URL + '" target="_blank" rel="noopener">'
+          + T('join.keepCta') + '</a>'
+          + '</div>'
+        : '';
       setMsg(doneMsg, 'ok', 'Vos photos sont envoyées ! Elles apparaîtront après modération.' +
-        (failed ? '<br />(' + failed + ' fichier(s) n’ont pas pu être envoyés.)' : ''));
+        (failed ? '<br />(' + failed + ' fichier(s) n’ont pas pu être envoyés.)' : '') + keep);
     } else if (failed > 0) {
       setMsg(doneMsg, 'err', 'Aucun fichier n’a pu être envoyé. Réessayez.');
     }

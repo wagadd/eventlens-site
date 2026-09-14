@@ -37,7 +37,10 @@
       'join.or': "ou",
       'join.openApp': "Ouvrir dans l'application EventLens",
       'join.appHint': "L'application ajoute la reconnaissance de vos photos par selfie et la galerie complète. Le web suffit pour envoyer.",
-      'join.appMissing': "L'application n'est pas installée sur cet appareil. Continuez ici, c'est prévu pour."
+      'join.appMissing': "L'application n'est pas installée sur cet appareil. Continuez ici, c'est prévu pour.",
+      'join.keepTitle': "Gardez vos photos avec vous",
+      'join.keepBody': "L'application EventLens vous laisse revoir toutes les photos de l'événement, retrouver celles où vous apparaissez et supprimer les vôtres.",
+      'join.keepCta': "Obtenir l'application"
     },
     en: {
       'tagline': "Share the moment, live.",
@@ -58,7 +61,10 @@
       'join.or': "or",
       'join.openApp': "Open in the EventLens app",
       'join.appHint': "The app adds selfie matching and the full gallery. The web is enough to send photos.",
-      'join.appMissing': "The app isn't installed on this device. Carry on here — that's what it's for."
+      'join.appMissing': "The app isn't installed on this device. Carry on here — that's what it's for.",
+      'join.keepTitle': "Keep your photos with you",
+      'join.keepBody': "The EventLens app lets you browse every photo of the event, find the ones you appear in, and delete your own.",
+      'join.keepCta': "Get the app"
     },
     nl: {
       'tagline': "Deel het moment, live.",
@@ -79,7 +85,10 @@
       'join.or': "of",
       'join.openApp': "Openen in de EventLens-app",
       'join.appHint': "De app voegt selfieherkenning en de volledige galerij toe. Het web volstaat om te versturen.",
-      'join.appMissing': "De app staat niet op dit toestel. Ga hier verder — daar is het voor."
+      'join.appMissing': "De app staat niet op dit toestel. Ga hier verder — daar is het voor.",
+      'join.keepTitle': "Houd je foto's bij je",
+      'join.keepBody': "Met de EventLens-app bekijk je alle foto's van het evenement, vind je de foto's waarop je staat en verwijder je je eigen foto's.",
+      'join.keepCta': "Download de app"
     },
     ar: {
       'tagline': "شارك اللحظة، مباشرةً.",
@@ -100,7 +109,10 @@
       'join.or': "أو",
       'join.openApp': "الفتح في تطبيق EventLens",
       'join.appHint': "يضيف التطبيق التعرّف على صورك بالسيلفي والمعرض الكامل. والويب يكفي للإرسال.",
-      'join.appMissing': "التطبيق غير مثبّت على هذا الجهاز. تابع من هنا، فهذه الصفحة مُعدّة لذلك."
+      'join.appMissing': "التطبيق غير مثبّت على هذا الجهاز. تابع من هنا، فهذه الصفحة مُعدّة لذلك.",
+      'join.keepTitle': "احتفظ بصورك معك",
+      'join.keepBody': "يتيح لك تطبيق EventLens تصفّح كل صور المناسبة، والعثور على الصور التي تظهر فيها، وحذف صورك.",
+      'join.keepCta': "تنزيل التطبيق"
     },
     tl: {
       'tagline': "Ibahagi ang sandali, live.",
@@ -121,7 +133,10 @@
       'join.or': "o",
       'join.openApp': "Buksan sa EventLens app",
       'join.appHint': "Nagdadagdag ang app ng selfie matching at buong gallery. Sapat na ang web para magpadala.",
-      'join.appMissing': "Wala ang app sa device na ito. Magpatuloy dito — para diyan ito."
+      'join.appMissing': "Wala ang app sa device na ito. Magpatuloy dito — para diyan ito.",
+      'join.keepTitle': "Dalhin ang iyong mga larawan",
+      'join.keepBody': "Sa EventLens app, makikita mo ang lahat ng larawan ng kaganapan, mahahanap ang mga kinalalabasan mo, at mabubura ang sarili mong mga larawan.",
+      'join.keepCta': "Kunin ang app"
     },
     es: {
       'tagline': "Comparte el momento, en directo.",
@@ -142,7 +157,10 @@
       'join.or': "o",
       'join.openApp': "Abrir en la aplicación EventLens",
       'join.appHint': "La aplicación añade el reconocimiento por selfie y la galería completa. La web basta para enviar.",
-      'join.appMissing': "La aplicación no está instalada en este dispositivo. Sigue aquí, para eso está."
+      'join.appMissing': "La aplicación no está instalada en este dispositivo. Sigue aquí, para eso está.",
+      'join.keepTitle': "Llévate tus fotos",
+      'join.keepBody': "La aplicación EventLens te permite ver todas las fotos del evento, encontrar aquellas en las que apareces y eliminar las tuyas.",
+      'join.keepCta': "Obtener la aplicación"
     },
     hi: {
       'tagline': "पल को साझा करें, लाइव।",
@@ -163,7 +181,10 @@
       'join.or': "या",
       'join.openApp': "EventLens ऐप में खोलें",
       'join.appHint': "ऐप सेल्फ़ी से फ़ोटो पहचानना और पूरी गैलरी जोड़ता है। भेजने के लिए वेब ही काफ़ी है।",
-      'join.appMissing': "इस डिवाइस पर ऐप नहीं है। यहीं जारी रखें — यह उसी के लिए है।"
+      'join.appMissing': "इस डिवाइस पर ऐप नहीं है। यहीं जारी रखें — यह उसी के लिए है।",
+      'join.keepTitle': "अपनी तस्वीरें साथ रखें",
+      'join.keepBody': "EventLens ऐप से आप कार्यक्रम की सभी तस्वीरें देख सकते हैं, जिनमें आप हैं उन्हें ढूँढ सकते हैं, और अपनी तस्वीरें हटा सकते हैं।",
+      'join.keepCta': "ऐप पाएँ"
     }
   };
 
