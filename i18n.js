@@ -40,7 +40,15 @@
       'join.appMissing': "L'application n'est pas installée sur cet appareil. Continuez ici, c'est prévu pour.",
       'join.keepTitle': "Gardez vos photos avec vous",
       'join.keepBody': "L'application EventLens vous laisse revoir toutes les photos de l'événement, retrouver celles où vous apparaissez et supprimer les vôtres.",
-      'join.keepCta': "Obtenir l'application"
+      'join.keepCta': "Obtenir l'application",
+      'join.acctTitle': "Gardez vos photos",
+      'join.acctBody': "Sans compte, cet envoi n'est rattaché qu'à ce navigateur. Un compte vous permet de retrouver vos photos depuis l'application, et de les supprimer.",
+      'join.acctEmailPh': "vous@exemple.com",
+      'join.acctPassPh': "Mot de passe (8 caractères min.)",
+      'join.acctCta': "Créer mon compte",
+      'join.acctInvalid': "Entrez un e-mail et un mot de passe d'au moins 8 caractères.",
+      'join.acctDone': "Compte créé. Vos photos y sont désormais rattachées.",
+      'join.acctFailed': "Création impossible :"
     },
     en: {
       'tagline': "Share the moment, live.",
@@ -64,7 +72,15 @@
       'join.appMissing': "The app isn't installed on this device. Carry on here — that's what it's for.",
       'join.keepTitle': "Keep your photos with you",
       'join.keepBody': "The EventLens app lets you browse every photo of the event, find the ones you appear in, and delete your own.",
-      'join.keepCta': "Get the app"
+      'join.keepCta': "Get the app",
+      'join.acctTitle': "Keep your photos",
+      'join.acctBody': "Without an account this upload is tied to this browser only. An account lets you find your photos from the app, and delete them.",
+      'join.acctEmailPh': "you@example.com",
+      'join.acctPassPh': "Password (8 characters min.)",
+      'join.acctCta': "Create my account",
+      'join.acctInvalid': "Enter an email and a password of at least 8 characters.",
+      'join.acctDone': "Account created. Your photos are now attached to it.",
+      'join.acctFailed': "Could not create the account:"
     },
     nl: {
       'tagline': "Deel het moment, live.",
@@ -88,7 +104,15 @@
       'join.appMissing': "De app staat niet op dit toestel. Ga hier verder — daar is het voor.",
       'join.keepTitle': "Houd je foto's bij je",
       'join.keepBody': "Met de EventLens-app bekijk je alle foto's van het evenement, vind je de foto's waarop je staat en verwijder je je eigen foto's.",
-      'join.keepCta': "Download de app"
+      'join.keepCta': "Download de app",
+      'join.acctTitle': "Bewaar je foto's",
+      'join.acctBody': "Zonder account is deze upload alleen aan deze browser gekoppeld. Met een account vind je je foto's terug in de app en kun je ze verwijderen.",
+      'join.acctEmailPh': "jij@voorbeeld.com",
+      'join.acctPassPh': "Wachtwoord (min. 8 tekens)",
+      'join.acctCta': "Account aanmaken",
+      'join.acctInvalid': "Voer een e-mailadres en een wachtwoord van minstens 8 tekens in.",
+      'join.acctDone': "Account aangemaakt. Je foto's zijn er nu aan gekoppeld.",
+      'join.acctFailed': "Aanmaken mislukt:"
     },
     ar: {
       'tagline': "شارك اللحظة، مباشرةً.",
@@ -112,7 +136,15 @@
       'join.appMissing': "التطبيق غير مثبّت على هذا الجهاز. تابع من هنا، فهذه الصفحة مُعدّة لذلك.",
       'join.keepTitle': "احتفظ بصورك معك",
       'join.keepBody': "يتيح لك تطبيق EventLens تصفّح كل صور المناسبة، والعثور على الصور التي تظهر فيها، وحذف صورك.",
-      'join.keepCta': "تنزيل التطبيق"
+      'join.keepCta': "تنزيل التطبيق",
+      'join.acctTitle': "احتفظ بصورك",
+      'join.acctBody': "بدون حساب، يرتبط هذا الإرسال بهذا المتصفح فقط. الحساب يتيح لك إيجاد صورك من التطبيق وحذفها.",
+      'join.acctEmailPh': "you@example.com",
+      'join.acctPassPh': "كلمة المرور (٨ أحرف على الأقل)",
+      'join.acctCta': "إنشاء حسابي",
+      'join.acctInvalid': "أدخل بريدًا إلكترونيًا وكلمة مرور من ٨ أحرف على الأقل.",
+      'join.acctDone': "تم إنشاء الحساب. صورك مرتبطة به الآن.",
+      'join.acctFailed': "تعذّر إنشاء الحساب:"
     },
     tl: {
       'tagline': "Ibahagi ang sandali, live.",
@@ -136,7 +168,15 @@
       'join.appMissing': "Wala ang app sa device na ito. Magpatuloy dito — para diyan ito.",
       'join.keepTitle': "Dalhin ang iyong mga larawan",
       'join.keepBody': "Sa EventLens app, makikita mo ang lahat ng larawan ng kaganapan, mahahanap ang mga kinalalabasan mo, at mabubura ang sarili mong mga larawan.",
-      'join.keepCta': "Kunin ang app"
+      'join.keepCta': "Kunin ang app",
+      'join.acctTitle': "Itago ang iyong mga larawan",
+      'join.acctBody': "Kung walang account, nakatali lang ang upload na ito sa browser na ito. Sa account, makikita mo ang mga larawan mo sa app at mabubura mo ang mga ito.",
+      'join.acctEmailPh': "ikaw@halimbawa.com",
+      'join.acctPassPh': "Password (8 karakter pataas)",
+      'join.acctCta': "Gumawa ng account",
+      'join.acctInvalid': "Maglagay ng email at password na may hindi bababa sa 8 karakter.",
+      'join.acctDone': "Nagawa ang account. Nakakabit na rito ang mga larawan mo.",
+      'join.acctFailed': "Hindi nagawa ang account:"
     },
     es: {
       'tagline': "Comparte el momento, en directo.",
@@ -160,7 +200,15 @@
       'join.appMissing': "La aplicación no está instalada en este dispositivo. Sigue aquí, para eso está.",
       'join.keepTitle': "Llévate tus fotos",
       'join.keepBody': "La aplicación EventLens te permite ver todas las fotos del evento, encontrar aquellas en las que apareces y eliminar las tuyas.",
-      'join.keepCta': "Obtener la aplicación"
+      'join.keepCta': "Obtener la aplicación",
+      'join.acctTitle': "Guarda tus fotos",
+      'join.acctBody': "Sin cuenta, este envío solo queda ligado a este navegador. Una cuenta te permite encontrar tus fotos desde la aplicación y eliminarlas.",
+      'join.acctEmailPh': "tu@ejemplo.com",
+      'join.acctPassPh': "Contraseña (mín. 8 caracteres)",
+      'join.acctCta': "Crear mi cuenta",
+      'join.acctInvalid': "Introduce un correo y una contraseña de al menos 8 caracteres.",
+      'join.acctDone': "Cuenta creada. Tus fotos ya están vinculadas a ella.",
+      'join.acctFailed': "No se pudo crear la cuenta:"
     },
     hi: {
       'tagline': "पल को साझा करें, लाइव।",
@@ -184,7 +232,15 @@
       'join.appMissing': "इस डिवाइस पर ऐप नहीं है। यहीं जारी रखें — यह उसी के लिए है।",
       'join.keepTitle': "अपनी तस्वीरें साथ रखें",
       'join.keepBody': "EventLens ऐप से आप कार्यक्रम की सभी तस्वीरें देख सकते हैं, जिनमें आप हैं उन्हें ढूँढ सकते हैं, और अपनी तस्वीरें हटा सकते हैं।",
-      'join.keepCta': "ऐप पाएँ"
+      'join.keepCta': "ऐप पाएँ",
+      'join.acctTitle': "अपनी तस्वीरें सुरक्षित रखें",
+      'join.acctBody': "बिना खाते के यह भेजी गई तस्वीरें सिर्फ़ इसी ब्राउज़र से जुड़ी रहती हैं। खाता होने पर आप उन्हें ऐप में पा सकते हैं और हटा भी सकते हैं।",
+      'join.acctEmailPh': "aap@udaharan.com",
+      'join.acctPassPh': "पासवर्ड (कम से कम 8 अक्षर)",
+      'join.acctCta': "खाता बनाएँ",
+      'join.acctInvalid': "ईमेल और कम से कम 8 अक्षरों का पासवर्ड डालें।",
+      'join.acctDone': "खाता बन गया। आपकी तस्वीरें अब इससे जुड़ी हैं।",
+      'join.acctFailed': "खाता नहीं बन सका:"
     }
   };
 

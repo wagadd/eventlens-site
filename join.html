@@ -124,6 +124,11 @@
   .drop small { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; }
 
   #fileInput, #entryInput { display: none; }
+  .acctBox { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.12); text-align: left; }
+  .acctBox strong { display: block; margin-bottom: 6px; }
+  .acctBox p { margin: 0 0 12px; opacity: 0.85; font-size: 14px; line-height: 1.5; }
+  .acctBox input { width: 100%; margin-bottom: 10px; }
+  .hidden { display: none; }
   .keepApp { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.12); text-align: left; }
   .keepApp strong { display: block; margin-bottom: 6px; }
   .keepApp p { margin: 0 0 10px; opacity: 0.85; font-size: 14px; line-height: 1.5; }
@@ -250,6 +255,18 @@
       <div class="counter" id="counter"></div>
       <div id="progress"></div>
       <div class="msg" id="doneMsg"></div>
+
+      <!-- Créer un compte. Caché tant que rien n'a été envoyé : avant l'envoi,
+           l'invité n'a aucune raison d'en vouloir un, et le lui demander à
+           l'entrée est le meilleur moyen de le faire fuir. -->
+      <div id="acctBox" class="acctBox hidden">
+        <strong data-i18n="join.acctTitle">Gardez vos photos</strong>
+        <p data-i18n="join.acctBody">Sans compte, cet envoi n'est rattaché qu'à ce navigateur. Un compte vous permet de retrouver vos photos depuis l'application, et de les supprimer.</p>
+        <input type="email" id="acctEmail" autocomplete="email" placeholder="vous@exemple.com" data-i18n-ph="join.acctEmailPh" />
+        <input type="password" id="acctPass" autocomplete="new-password" placeholder="Mot de passe (8 caractères min.)" data-i18n-ph="join.acctPassPh" />
+        <button class="btn" id="acctBtn" data-i18n="join.acctCta">Créer mon compte</button>
+        <div class="msg" id="acctMsg"></div>
+      </div>
     </div>
   </section>
 
@@ -410,6 +427,28 @@
         '<span class="spin"></span>Photo envoyée. L\u2019organisateur doit maintenant vous laisser entrer.');
     } catch (e) {
       setMsg(eventMsg, 'err', 'Envoi de la photo impossible : ' + e.message);
+    }
+  });
+
+  // Créer un compte, c'est ici faire MONTER la session anonyme en compte :
+  // `updateUser` garde le même identifiant, donc les photos déjà envoyées restent
+  // les siennes. Un `signUp` classique aurait créé une seconde identité et laissé
+  // les envois derrière, rattachés à un anonyme que plus personne ne reprend.
+  const acctBox = $('acctBox'), acctMsg = $('acctMsg');
+
+  $('acctBtn').addEventListener('click', async function () {
+    const T = window.ELI18N && window.ELI18N.t ? window.ELI18N.t : function (k) { return k; };
+    const email = ($('acctEmail').value || '').trim();
+    const pass = $('acctPass').value || '';
+    if (!email || pass.length < 8) { setMsg(acctMsg, 'err', T('join.acctInvalid')); return; }
+    setMsg(acctMsg, 'info', '<span class="spin"></span>…');
+    try {
+      const { error } = await supabase.auth.updateUser({ email: email, password: pass });
+      if (error) throw new Error(error.message);
+      acctBox.classList.add('hidden');
+      setMsg(doneMsg, 'ok', T('join.acctDone'));
+    } catch (e) {
+      setMsg(acctMsg, 'err', T('join.acctFailed') + ' ' + e.message);
     }
   });
 
@@ -767,6 +806,12 @@
         : '';
       setMsg(doneMsg, 'ok', 'Vos photos sont envoyées ! Elles apparaîtront après modération.' +
         (failed ? '<br />(' + failed + ' fichier(s) n’ont pas pu être envoyés.)' : '') + keep);
+
+      // Seulement à qui n'en a pas déjà un.
+      try {
+        const { data: me } = await supabase.auth.getUser();
+        if (me && me.user && me.user.is_anonymous) acctBox.classList.remove('hidden');
+      } catch (e) { /* tant pis : ne pas proposer vaut mieux que proposer à tort */ }
     } else if (failed > 0) {
       setMsg(doneMsg, 'err', 'Aucun fichier n’a pu être envoyé. Réessayez.');
     }
