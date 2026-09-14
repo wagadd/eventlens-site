@@ -796,14 +796,18 @@
       // Le bloc ne s'affiche que si APP_STORE_URL est renseignée : inviter à
       // télécharger une application introuvable serait pire que se taire.
       var T = window.ELI18N && window.ELI18N.t ? window.ELI18N.t : function (k) { return k; };
-      var keep = APP_STORE_URL
-        ? '<div class="keepApp">'
-          + '<strong>' + T('join.keepTitle') + '</strong>'
-          + '<p>' + T('join.keepBody') + '</p>'
-          + '<a class="btn ghost" href="' + APP_STORE_URL + '" target="_blank" rel="noopener">'
-          + T('join.keepCta') + '</a>'
-          + '</div>'
-        : '';
+      // Le bloc s'affiche TOUJOURS : c'est le seul moment où l'invité a une
+      // raison d'installer l'app, et se taire faute de lien le prive de
+      // l'information autant que du lien. Seule la destination change —
+      // l'App Store quand la fiche existe, la page de présentation sinon, qui
+      // ne promet rien qu'elle ne tienne.
+      var keep = '<div class="keepApp">'
+        + '<strong>' + T('join.keepTitle') + '</strong>'
+        + '<p>' + T('join.keepBody') + '</p>'
+        + '<a class="btn ghost" href="' + (APP_STORE_URL || './index.html') + '"'
+        + (APP_STORE_URL ? ' target="_blank" rel="noopener"' : '') + '>'
+        + T(APP_STORE_URL ? 'join.keepCta' : 'join.keepLearn') + '</a>'
+        + '</div>';
       setMsg(doneMsg, 'ok', 'Vos photos sont envoyées ! Elles apparaîtront après modération.' +
         (failed ? '<br />(' + failed + ' fichier(s) n’ont pas pu être envoyés.)' : '') + keep);
 
