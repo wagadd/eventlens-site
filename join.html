@@ -59,7 +59,14 @@
   label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
   label:first-of-type { margin-top: 0; }
 
-  input[type="text"] {
+  /* `type="text"` seulement, c'était le défaut : les champs e-mail et mot de
+     passe ajoutés au bloc « créer un compte » retombaient donc sur le style du
+     navigateur — fond blanc sur une page sombre. Et `width:100%` sans
+     `box-sizing` faisait déborder leur marge intérieure hors de la carte. */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    box-sizing: border-box;
     width: 100%;
     background: var(--card-2);
     border: 1px solid rgba(255, 255, 255, 0.10);
@@ -69,7 +76,9 @@
     padding: 14px 16px;
     outline: none;
   }
-  input[type="text"]:focus { border-color: var(--violet); }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus { border-color: var(--violet); }
   .or{ text-align:center; color:#8b93a7; font-size:.85rem; margin:14px 0 10px; }
   .btn.ghost{ background:transparent; border:1px solid rgba(255,255,255,.22); color:#f2f3f8; }
   .hint{ color:#8b93a7; font-size:.82rem; line-height:1.5; margin-top:10px; text-align:center; }
@@ -127,7 +136,7 @@
   .acctBox { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.12); text-align: left; }
   .acctBox strong { display: block; margin-bottom: 6px; }
   .acctBox p { margin: 0 0 12px; opacity: 0.85; font-size: 14px; line-height: 1.5; }
-  .acctBox input { width: 100%; margin-bottom: 10px; }
+  .acctBox input { display: block; width: 100%; max-width: 100%; margin-bottom: 10px; }
   .hidden { display: none; }
   .keepApp { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.12); text-align: left; }
   .keepApp strong { display: block; margin-bottom: 6px; }
@@ -808,8 +817,10 @@
         + (APP_STORE_URL ? ' target="_blank" rel="noopener"' : '') + '>'
         + T(APP_STORE_URL ? 'join.keepCta' : 'join.keepLearn') + '</a>'
         + '</div>';
-      setMsg(doneMsg, 'ok', 'Vos photos sont envoyées ! Elles apparaîtront après modération.' +
-        (failed ? '<br />(' + failed + ' fichier(s) n’ont pas pu être envoyés.)' : '') + keep);
+      // Traduit, comme le reste du bloc : le message était en dur en français
+      // et se retrouvait sous des paragraphes anglais, dans la même carte.
+      setMsg(doneMsg, 'ok', T('join.sentOk') +
+        (failed ? '<br />(' + T('join.sentFailed').replace('{n}', String(failed)) + ')' : '') + keep);
 
       // Seulement à qui n'en a pas déjà un.
       try {
@@ -817,7 +828,8 @@
         if (me && me.user && me.user.is_anonymous) acctBox.classList.remove('hidden');
       } catch (e) { /* tant pis : ne pas proposer vaut mieux que proposer à tort */ }
     } else if (failed > 0) {
-      setMsg(doneMsg, 'err', 'Aucun fichier n’a pu être envoyé. Réessayez.');
+      setMsg(doneMsg, 'err',
+        (window.ELI18N && window.ELI18N.t ? window.ELI18N.t('join.sentNone') : 'Aucun fichier n’a pu être envoyé. Réessayez.'));
     }
 
     captionInput.value = '';
